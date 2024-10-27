@@ -1,0 +1,6 @@
+@Rent4Students.API_HostAddress = http://localhost:5212
+
+GET {{Rent4Students.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
