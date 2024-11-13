@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rent4Students.Domain.Entities
+namespace Rent4Students.Domain.Entities.Base
 {
     public record BaseEntity
     {
