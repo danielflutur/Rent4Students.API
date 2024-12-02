@@ -1,4 +1,5 @@
 ﻿using Rent4Students.Domain.Entities.Base;
+using Rent4Students.Domain.Entities.Enums;
 
 namespace Rent4Students.Domain.Entities
 {
@@ -9,8 +10,7 @@ namespace Rent4Students.Domain.Entities
         public string Email { get; private set; }
         public string EncryptedPassword { get; private set; }
         public string? ProfilePictureURL { get; private set; }
-        public Guid? UniversityID { get; private set; }
-        public University? UniversityName { get; private set; }
-
+        public int UserRoleId { get; private set; }
+        public Role UserRole { get; private set; }
     }
 }
