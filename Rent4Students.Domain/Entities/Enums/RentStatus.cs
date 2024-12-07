@@ -2,7 +2,7 @@
 
 namespace Rent4Students.Domain.Entities.Enums
 {
-    public record PaymentPlan : BaseEnumEntity
+    public record RentStatus : BaseEnumEntity
     {
     }
 }

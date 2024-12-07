@@ -2,7 +2,7 @@
 
 namespace Rent4Students.Domain.Entities.Joined
 {
-    public record StudentPreferences
+    public record StudentAttributes
     {
         public int UserFeatureId { get; set; }
         public UserFeature UserFeature { get; set; }
