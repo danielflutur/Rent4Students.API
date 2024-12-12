@@ -4,7 +4,7 @@ using Rent4Students.Domain.Entities;
 
 namespace Rent4Students.Domain.Configurations
 {
-    public class RentDocumentConfiguration : DocumentStorageConfiguration<RentDocument>
+    public class RentDocumentConfiguration : DocumentStorageConfiguration
     {
         public void Configure(EntityTypeBuilder<RentDocument> builder)
         {

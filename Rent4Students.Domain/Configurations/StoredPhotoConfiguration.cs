@@ -17,7 +17,7 @@ namespace Rent4Students.Domain.Configurations
             builder.Property(photo => photo.PhotoName)
                 .IsRequired();
 
-            builder.Property(photo => photo.PhotoDescription)
+            builder.Property(photo => photo.PhotoPath)
                 .IsRequired();
 
             builder.HasOne(photo => photo.ParentListing)
@@ -26,9 +26,30 @@ namespace Rent4Students.Domain.Configurations
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
 
-            builder.HasOne(photo => photo.User)
-                .WithOne(user => user.ProfilePhoto)
-                .HasForeignKey<User>(user => user.ProfilePictureId)
+            builder.HasOne(photo => photo.Student)
+                .WithOne(student => student.ProfilePhoto)
+                .HasForeignKey<Student>(student => student.ProfilePictureId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
+
+
+            builder.HasOne(photo => photo.University)
+                .WithOne(university => university.ProfilePhoto)
+                .HasForeignKey<University>(university => university.ProfilePictureId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
+
+
+            builder.HasOne(photo => photo.Faculty)
+                .WithOne(faculty => faculty.ProfilePhoto)
+                .HasForeignKey<Faculty>(faculty => faculty.ProfilePictureId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
+
+
+            builder.HasOne(photo => photo.PropertyOwner)
+                .WithOne(owner => owner.ProfilePhoto)
+                .HasForeignKey<PropertyOwner>(owner => owner.ProfilePictureId)
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
         }

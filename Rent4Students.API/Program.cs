@@ -1,3 +1,7 @@
+using Microsoft.Extensions.FileProviders;
+using Rent4Students.API.ServiceExtensions;
+using Rent4Students.Application.Mappings;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace Rent4Students.API
 {
@@ -14,19 +18,46 @@ namespace Rent4Students.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddDatabases(builder.Configuration);
+            builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+            builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddRepositories();
+            builder.Services.AddServices();
+
+            var corsSpecificOrigin = "AllowedOrigins";
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(corsSpecificOrigin,
+                    policy =>
+                    {
+                        policy
+                            .AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            app.UseSwagger();
+            app.UseSwaggerUI(opt =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                opt.DocExpansion(DocExpansion.None);
+                opt.EnableTryItOutByDefault();
+            });
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "StoredPhotos")),
+                RequestPath = "/StoredPhotos"
+            });
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseCors(corsSpecificOrigin);
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

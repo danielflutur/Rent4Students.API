@@ -13,22 +13,22 @@ namespace Rent4Students.Domain.Configurations.Joined
             builder.HasOne(history => history.Student)
                 .WithMany(student => student.RentHistory)
                 .HasForeignKey(history => history.StudentId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(history => history.Listing)
                 .WithMany(listing => listing.RentHistory)
                 .HasForeignKey(history => history.ListingId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(history => history.RentDocument)
                 .WithMany(document => document.RentHistories)
                 .HasForeignKey(history => history.RentDocumentId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(history => history.RentStatus)
                 .WithMany()
                 .HasForeignKey(history => history.RentStatusId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

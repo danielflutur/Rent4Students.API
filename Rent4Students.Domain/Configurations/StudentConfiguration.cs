@@ -1,20 +1,60 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Rent4Students.Domain.Configurations.Base;
 using Rent4Students.Domain.Entities;
 
 namespace Rent4Students.Domain.Configurations
 {
-    public class StudentConfiguration : UserConfiguration<Student>
+    public class StudentConfiguration : BaseEntityConfiguration<Student>
     {
-        public void Configure(EntityTypeBuilder<Student> builder)
+        public override void Configure(EntityTypeBuilder<Student> builder)
         {
+            base.Configure(builder);
+
+            builder.Property(user => user.FirstName)
+                .IsRequired();
+
+            builder.Property(user => user.LastName)
+                .IsRequired();
+
+            builder.Property(user => user.Email)
+                .IsRequired();
+
+            builder.Property(user => user.EncryptedPassword)
+                .IsRequired();
+
+            builder.Property(user => user.Phone)
+               .IsRequired(false);
+
             builder.Property(student => student.StudentIdNumber)
+                .IsRequired();
+
+            builder.Property(student => student.Age)
+                .IsRequired();
+
+            builder.HasOne(student => student.Nationality)
+                .WithMany()
+                .HasForeignKey(student => student.NationalityId)
+                .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired();
 
             builder.HasOne(student => student.FacultyName)
                 .WithMany()
                 .HasForeignKey(student => student.FacultyId)
+                .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired();
+
+            builder.HasOne(student => student.ProfilePhoto)
+                .WithOne(photo => photo.Student)
+                .HasForeignKey<StoredPhoto>(student => student.StudentId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired(false);
+
+            builder.HasOne(student => student.Address)
+                .WithOne(address => address.Student)
+                .HasForeignKey<Address>(address => address.StudentId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired(false);
 
             builder.HasMany(student => student.FinancialHelpDocuments)
                 .WithOne(document => document.Student)

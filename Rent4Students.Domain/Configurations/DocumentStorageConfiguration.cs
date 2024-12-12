@@ -5,7 +5,7 @@ using Rent4Students.Domain.Entities;
 
 namespace Rent4Students.Domain.Configurations
 {
-    public class DocumentStorageConfiguration<TEntity> : BaseEntityConfiguration<DocumentStorage> where TEntity : DocumentStorage
+    public class DocumentStorageConfiguration : BaseEntityConfiguration<DocumentStorage>
     {
         public override void Configure(EntityTypeBuilder<DocumentStorage> builder)
         {

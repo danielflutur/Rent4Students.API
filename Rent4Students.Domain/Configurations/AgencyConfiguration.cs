@@ -3,7 +3,7 @@ using Rent4Students.Domain.Entities;
 
 namespace Rent4Students.Domain.Configurations
 {
-    public class AgencyConfiguration : PropertyOwnerConfiguration<Agency>
+    public class AgencyConfiguration : PropertyOwnerConfiguration
     {
         public void Configure(EntityTypeBuilder<Agency> builder)
         {

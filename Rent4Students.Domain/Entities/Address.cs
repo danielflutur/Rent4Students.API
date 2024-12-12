@@ -12,8 +12,14 @@ namespace Rent4Students.Domain.Entities
         public string County { get; set; }
         public string Country { get; set; }
         public string PostalCode { get; set; }
-        public Guid? UserId { get; set; }
-        public User? User { get; set; }
+        public Guid? StudentId { get; set; }
+        public Student? Student { get; set; }
+        public Guid? UniversityId { get; set; }
+        public University? University { get; set; }
+        public Guid? FacultyId { get; set; }
+        public Faculty? Faculty { get; set; }
+        public Guid? PropertyOwnerId { get; set; }
+        public PropertyOwner? PropertyOwner { get; set; }
         public Guid? ListingId { get; set; }
         public Listing? Listing { get; set; }
     }

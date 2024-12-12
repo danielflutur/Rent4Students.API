@@ -17,9 +17,17 @@ namespace Rent4Students.Domain.Configurations
             builder.Property(listing => listing.Description)
                 .IsRequired();
 
-
-            builder.Property(listing => listing.Description)
+            builder.Property(listing => listing.RentPrice)
                 .IsRequired();
+
+            builder.Property(listing => listing.BuildingYear)
+                .IsRequired(false);
+
+            builder.Property(listing => listing.Surface)
+                .IsRequired();
+
+            builder.Property(listing => listing.DepositAmount)
+                .IsRequired(false);
 
             builder.HasOne(listing => listing.ListingType)
                 .WithMany(type => type.Listings)
@@ -31,19 +39,19 @@ namespace Rent4Students.Domain.Configurations
                 .WithOne(address => address.Listing)
                 .HasForeignKey<Address>(address => address.ListingId)
                 .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired();
+                .IsRequired(false);
 
             builder.HasOne(listing => listing.Owner)
                 .WithMany(owner => owner.Listings)
                 .HasForeignKey(listing => listing.OwnerID)
-                .OnDelete(DeleteBehavior.SetNull)
+                .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
 
             builder.HasMany(listing => listing.Photos)
                 .WithOne(photo => photo.ParentListing)
                 .HasForeignKey(photo => photo.ListingId)
                 .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired();
+                .IsRequired(false);
 
             builder.HasMany(listing => listing.Amenities)
                 .WithOne(livingAmenity => livingAmenity.Listing)

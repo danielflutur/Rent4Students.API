@@ -13,12 +13,6 @@ namespace Rent4Students.Domain.Configurations.Enums
 
             builder.Property(feature => feature.Value)
                 .IsRequired(false);
-
-            builder.HasMany(feature => feature.RoommatePreferences)
-                .WithOne(preference => preference.UserFeature)
-                .HasForeignKey(preference => preference.UserFeatureId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
         }
     }
 }

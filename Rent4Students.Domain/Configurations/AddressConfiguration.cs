@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rent4Students.Domain.Configurations.Base;
 using Rent4Students.Domain.Entities;
 
@@ -32,18 +31,6 @@ namespace Rent4Students.Domain.Configurations
 
             builder.Property(address => address.PostalCode)
                 .IsRequired();
-
-            builder.HasOne(address => address.User)
-                .WithOne(user => user.Address)
-                .HasForeignKey<User>(user => user.AddressId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .IsRequired(false);
-
-            builder.HasOne(address => address.Listing)
-                .WithOne(listing => listing.Address)
-                .HasForeignKey<Listing>(listing => listing.AddressId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .IsRequired(false);
         }
     }
 }
