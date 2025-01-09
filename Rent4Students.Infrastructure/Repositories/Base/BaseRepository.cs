@@ -24,16 +24,15 @@ namespace Rent4Students.Infrastructure.Repositories.Base
             return entity;
         }
 
-        public virtual async Task Delete(Guid id)
+        public virtual async Task Delete(TEntity entity)
         {
-            _dbSet.Where(e => e.Id == id)
-                .FirstOrDefault().IsDeleted = true;
+            entity.IsDeleted = true;
             await _context.SaveChangesAsync();
         }
 
         public virtual async Task<List<TEntity>> GetAll()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.Where(entity => entity.IsDeleted == false).ToListAsync();
         }
 
         public virtual async Task<TEntity> GetById(Guid id)

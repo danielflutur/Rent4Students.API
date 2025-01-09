@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Rent4Students.Application.DTOs.Address;
 using Rent4Students.Application.DTOs.Listing;
+using Rent4Students.Application.DTOs.ListingFeature;
 using Rent4Students.Application.DTOs.PropertyOwner;
 using Rent4Students.Domain.Entities;
+using Rent4Students.Domain.Entities.Enums;
 
 namespace Rent4Students.Application.Mappings
 {
@@ -13,6 +15,7 @@ namespace Rent4Students.Application.Mappings
             ConfigureListingMapping();
             ConfigureAddressMapping();
             ConfigurePropertyOwnerMapping();
+            ConfigureListingFeatureMapping();
         }
 
         private void ConfigureListingMapping()
@@ -37,6 +40,12 @@ namespace Rent4Students.Application.Mappings
             CreateMap<PropertyOwner, ResponsePropertyOwnerDTO>()
                 .ForMember(owner => owner.ProfilePhoto,
                 opt => opt.MapFrom(entity => entity.ProfilePhoto.PhotoURL));
+        }
+
+        private void ConfigureListingFeatureMapping()
+        {
+            CreateMap<ListingFeatureDTO, ListingFeature>();
+            CreateMap<ListingFeature, ResponseListingFeatureDTO>();
         }
     }
 }

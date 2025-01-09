@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Rent4Students.Application.DTOs.Address;
+﻿using Rent4Students.Application.DTOs.Address;
 
 namespace Rent4Students.Application.DTOs.Listing
 {
     public class ResponseListingDTO
     {
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public int RentPrice { get; set; }

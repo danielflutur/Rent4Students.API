@@ -6,6 +6,6 @@
         Task<List<TEntity>> GetAll();
         Task<TEntity> GetById(Guid id);
         Task<TEntity> Update(TEntity entity);
-        Task Delete(Guid id);
+        Task Delete(TEntity entity);
     }
 }

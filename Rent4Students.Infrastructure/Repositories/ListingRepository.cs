@@ -25,6 +25,7 @@ namespace Rent4Students.Infrastructure.Repositories
         public override async Task<List<Listing>> GetAll()
         {
             return await _dbSet
+                .Where(listing => listing.IsDeleted == false)
                 .Include(listing => listing.Address)
                 .Include(listing => listing.Photos)
                 .Include(listing => listing.Amenities)

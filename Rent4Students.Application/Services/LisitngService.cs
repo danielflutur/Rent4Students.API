@@ -78,7 +78,14 @@ namespace Rent4Students.Application.Services
 
         public async Task Deleted(Guid Id)
         {
-            await _listingRepository.Delete(Id);
+            var lisitng = await _listingRepository.GetById(Id);
+
+            if (lisitng is null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            await _listingRepository.Delete(lisitng);
         }
 
         public async Task<List<ResponseListingDTO>> GetAll()

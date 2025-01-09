@@ -47,7 +47,14 @@ namespace Rent4Students.Application.Services
 
         public async Task Deleted(Guid Id)
         {
-            await _ownerRepository.Delete(Id);
+            var owner = await _ownerRepository.GetById(Id);
+
+            if (owner is null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            await _ownerRepository.Delete(owner);
         }
 
         public async Task<List<ResponsePropertyOwnerDTO>> GetAll()
