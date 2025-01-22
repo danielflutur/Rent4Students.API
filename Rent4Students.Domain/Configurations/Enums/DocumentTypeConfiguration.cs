@@ -6,9 +6,5 @@ namespace Rent4Students.Domain.Configurations.Enums
 {
     public class DocumentTypeConfiguration : BaseEnumEntityConfiguration<DocumentType>
     {
-        public override void Configure(EntityTypeBuilder<DocumentType> builder)
-        {
-            base.Configure(builder);
-        }
     }
 }

@@ -4,6 +4,7 @@ namespace Rent4Students.Domain.Entities.Enums
 {
     public record DocumentStatus : BaseEnumEntity
     {
-        public List<DocumentStorage> Documents { get; set; }
+        public List<FinancialHelpDocument>? FinancialHelpDocuments { get; set; }
+        public List<RentDocument>? RentDocuments { get; set; }
     }
 }

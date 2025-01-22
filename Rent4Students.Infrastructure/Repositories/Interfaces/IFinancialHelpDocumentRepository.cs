@@ -1,6 +1,9 @@
-﻿namespace Rent4Students.Infrastructure.Repositories.Interfaces
+﻿using Rent4Students.Domain.Entities;
+using Rent4Students.Infrastructure.Repositories.Interfaces.Base;
+
+namespace Rent4Students.Infrastructure.Repositories.Interfaces
 {
-    public interface IFinancialHelpDocumentRepository : IDocumentStorageRepository
+    public interface IFinancialHelpDocumentRepository : IBaseRepository<FinancialHelpDocument>
     {
     }
 }

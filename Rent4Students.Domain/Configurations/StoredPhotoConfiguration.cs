@@ -28,21 +28,21 @@ namespace Rent4Students.Domain.Configurations
 
             builder.HasOne(photo => photo.Student)
                 .WithOne(student => student.ProfilePhoto)
-                .HasForeignKey<Student>(student => student.ProfilePictureId)
+                .HasForeignKey<Student>(student => student.ProfilePhotoId)
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
 
 
             builder.HasOne(photo => photo.University)
                 .WithOne(university => university.ProfilePhoto)
-                .HasForeignKey<University>(university => university.ProfilePictureId)
+                .HasForeignKey<University>(university => university.ProfilePhotoId)
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
 
 
             builder.HasOne(photo => photo.Faculty)
                 .WithOne(faculty => faculty.ProfilePhoto)
-                .HasForeignKey<Faculty>(faculty => faculty.ProfilePictureId)
+                .HasForeignKey<Faculty>(faculty => faculty.ProfilePhotoId)
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
 

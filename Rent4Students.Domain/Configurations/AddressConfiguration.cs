@@ -8,28 +8,16 @@ namespace Rent4Students.Domain.Configurations
     {
         public override void Configure(EntityTypeBuilder<Address> builder)
         {
-            builder.Property(address => address.StreetAddress)
+            builder.Property(address => address.AddressDetails)
                 .IsRequired();
 
-            builder.Property(address => address.AppartmentNumber)
-                .IsRequired(false);
-
-            builder.Property(address => address.FloorNumber)
-                .IsRequired(false);
-
-            builder.Property(address => address.BuildingNumber)
+            builder.Property(address => address.GoogleMaps)
                 .IsRequired(false);
 
             builder.Property(address => address.City)
                 .IsRequired();
 
             builder.Property(address =>address.County)
-                .IsRequired();
-
-            builder.Property(address => address.Country)
-                .IsRequired();
-
-            builder.Property(address => address.PostalCode)
                 .IsRequired();
         }
     }

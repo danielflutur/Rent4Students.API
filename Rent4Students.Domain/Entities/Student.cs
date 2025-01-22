@@ -6,28 +6,33 @@ namespace Rent4Students.Domain.Entities
 {
     public record Student : BaseEntity
     {
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-        public string Email { get; private set; }
-        public string EncryptedPassword { get; private set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string EncryptedPassword { get; set; }
         public string? Phone { get; set; }
-        public string StudentIdNumber { get; private set; } // Nr. Matricol
-        public int Age { get; private set; }
+        public string StudentIdNumber { get; set; } // Nr. Matricol
+        public int Age { get; set; }
+        public int? YearOfStudy { get; set; }
 
-        public int NationalityId { get; private set; }
-        public Nationality Nationality { get; private set; }
+        public int? GenderId { get; set; }
+        public Gender? Gender { get; set; }
+        public int? NationalityId { get; set; }
+        public Nationality? Nationality { get; set; }
 
-        public Guid FacultyId { get; private set; }
-        public Faculty FacultyName { get; private set; }
-        public Guid? ProfilePictureId { get; private set; }
-        public StoredPhoto? ProfilePhoto { get; private set; }
+        public Guid FacultyId { get; set; }
+        public Faculty FacultyName { get; set; }
+        public Guid? ProfilePhotoId { get; set; }
+        public StoredPhoto? ProfilePhoto { get; set; }
         public Guid? AddressId { get; set; }
         public Address? Address { get; set; }
 
-        public List<FinancialHelpDocument>? FinancialHelpDocuments { get; private set; }
-        public List<RentHistory>? RentHistory { get; private set; }
-        public List<StudentRoommate>? Roommates { get; private set; }
-        public List<StudentAttribute>? Attributes { get; private set; }
-        public List<LivingPreference>? LivingPreferences { get; private set; }
+        public List<FinancialHelpDocument>? FinancialHelpDocuments { get; set; }
+        public List<RentHistory>? RentHistory { get; set; }
+        public List<StudentRoommate>? Roommates { get; set; }
+        public List<StudentHobbies>? Hobbies { get; set; }
+        public List<StudentAllergies>? Allergies { get; set; }
+        public List<StudentAttributes>? Attributes { get; set; }
+        public List<LivingPreference>? LivingPreferences { get; set; }
     }
 }

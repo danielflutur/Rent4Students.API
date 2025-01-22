@@ -15,7 +15,7 @@ namespace Rent4Students.Application.Services
         private readonly IAddressRepository _addressRepository;
         private readonly IPropertyOwnerRepository _ownerRepository;
         private readonly IListingTypeRepository _listingTypeRepository;
-        private readonly IListingFeatureRepository _listingFeaureRepository;
+        private readonly IListingFeatureRepository _listingFeatureRepository;
         private readonly IStoredPhotoService _storedPhotoService;
         private readonly IMapper _mapper;
 
@@ -32,18 +32,18 @@ namespace Rent4Students.Application.Services
             _addressRepository = addressRepository;
             _ownerRepository = ownerRepository;
             _listingTypeRepository = listingTypeRepository;
-            _listingFeaureRepository = listingFeatureRepository;
+            _listingFeatureRepository = listingFeatureRepository;
             _storedPhotoService = storedPhotoService;
             _mapper = mapper;
         }
 
         public async Task<ResponseListingDTO> Create(ListingDTO listingDTO)
         {
-            var photos = await _storedPhotoService.CreateMultiple(listingDTO.Photos);
+            var photos = await _storedPhotoService.CreateMultiple(listingDTO.Photos); 
             listingDTO.Photos = null;
             var owner = await _ownerRepository.GetById(listingDTO.OwnerId);
             var listingType = await _listingTypeRepository.GetById(listingDTO.ListingTypeId);
-            var listingFeatures = await _listingFeaureRepository.GetByIds(listingDTO.AmenitiesIds);
+            var listingFeatures = await _listingFeatureRepository.GetByIds(listingDTO.AmenitiesIds);
 
             var mappedListing = _mapper.Map<Listing>(listingDTO);
             mappedListing.ListingType = listingType;
@@ -76,7 +76,7 @@ namespace Rent4Students.Application.Services
             return _mapper.Map<ResponseListingDTO>(listing);
         }
 
-        public async Task Deleted(Guid Id)
+        public async Task Delete(Guid Id)
         {
             var lisitng = await _listingRepository.GetById(Id);
 

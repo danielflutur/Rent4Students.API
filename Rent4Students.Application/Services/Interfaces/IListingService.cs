@@ -8,6 +8,6 @@ namespace Rent4Students.Application.Services.Interfaces
         Task<ResponseListingDTO> GetById(Guid Id);
         Task<List<ResponseListingDTO>> GetAll();
         Task<ResponseListingDTO> Update(ListingDTO listingDTO);
-        Task Deleted(Guid Id);
+        Task Delete(Guid Id);
     }
 }

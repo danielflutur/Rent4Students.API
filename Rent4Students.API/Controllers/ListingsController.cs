@@ -54,7 +54,7 @@ namespace Rent4Students.API.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            await _listingService.Deleted(id);
+            await _listingService.Delete(id);
 
             return Ok(id);
         }

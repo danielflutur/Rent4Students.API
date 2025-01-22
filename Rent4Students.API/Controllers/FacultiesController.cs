@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Rent4Students.Domain.Entities;
-using Rent4Students.Infrastructure.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using Rent4Students.Application.DTOs.Faculty;
+using Rent4Students.Application.Services.Interfaces;
 
 namespace Rent4Students.API.Controllers
 {
@@ -14,95 +8,55 @@ namespace Rent4Students.API.Controllers
     [ApiController]
     public class FacultiesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IFacultyService _facultyService;
 
-        public FacultiesController(ApplicationDbContext context)
+        public FacultiesController(IFacultyService facultyService)
         {
-            _context = context;
-        }
-
-        // GET: api/Faculties
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Faculty>>> GetFaculty()
-        {
-            return await _context.Faculty.ToListAsync();
-        }
-
-        // GET: api/Faculties/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Faculty>> GetFaculty(Guid id)
-        {
-            var faculty = await _context.Faculty.FindAsync(id);
-
-            if (faculty == null)
-            {
-                return NotFound();
-            }
-
-            return faculty;
-        }
-
-        // PUT: api/Faculties/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFaculty(Guid id, Faculty faculty)
-        {
-            if (id != faculty.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(faculty).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FacultyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            _facultyService = facultyService;
         }
 
         // POST: api/Faculties
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Faculty>> PostFaculty(Faculty faculty)
+        [ProducesResponseType(typeof(ResponseFacultyDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateListing(FacultyDTO facultyDTO)
         {
-            _context.Faculty.Add(faculty);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFaculty", new { id = faculty.Id }, faculty);
+            return Ok(await _facultyService.Create(facultyDTO));
         }
 
-        // DELETE: api/Faculties/5
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(ResponseFacultyDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            return Ok(await _facultyService.GetById(id));
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ResponseFacultyDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _facultyService.GetAll());
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ResponseFacultyDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update(Guid id, FacultyDTO facultyDTO)
+        {
+            return Ok(await _facultyService.Update(facultyDTO));
+        }
+
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFaculty(Guid id)
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var faculty = await _context.Faculty.FindAsync(id);
-            if (faculty == null)
-            {
-                return NotFound();
-            }
+            await _facultyService.Delete(id);
 
-            _context.Faculty.Remove(faculty);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool FacultyExists(Guid id)
-        {
-            return _context.Faculty.Any(e => e.Id == id);
+            return Ok(id);
         }
     }
 }

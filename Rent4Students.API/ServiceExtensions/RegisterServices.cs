@@ -13,6 +13,11 @@ namespace Rent4Students.API.ServiceExtensions
             services.AddScoped<IPropertyOwnerService, PropertyOwnerService>();
             services.AddScoped<IStoredPhotoService, StoredPhotoService>();
             services.AddScoped<IListingFeatureService, ListingFeatureService>();
+            services.AddScoped<IObjectDetectionService, ObjectDetectionService>();
+            services.AddScoped<IRoommateMatchingService, RoommateMatchingService>();
+            services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IUniversityService, UniversityService>();
+            services.AddScoped<IFacultyService, FacultyService>();
 
             return services;
         }

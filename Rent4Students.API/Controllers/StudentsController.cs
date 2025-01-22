@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Rent4Students.Domain.Entities;
-using Rent4Students.Infrastructure.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using Rent4Students.Application.DTOs.Student;
+using Rent4Students.Application.Services.Interfaces;
 
 namespace Rent4Students.API.Controllers
 {
@@ -14,95 +8,67 @@ namespace Rent4Students.API.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IStudentService _studentService;
+        private readonly IRoommateMatchingService _matchingService;
 
-        public StudentsController(ApplicationDbContext context)
+        public StudentsController(
+            IStudentService studentService, 
+            IRoommateMatchingService matchingService)
         {
-            _context = context;
-        }
-
-        // GET: api/Students
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
-        {
-            return await _context.Student.ToListAsync();
-        }
-
-        // GET: api/Students/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(Guid id)
-        {
-            var student = await _context.Student.FindAsync(id);
-
-            if (student == null)
-            {
-                return NotFound();
-            }
-
-            return student;
-        }
-
-        // PUT: api/Students/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(Guid id, Student student)
-        {
-            if (id != student.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(student).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            _studentService = studentService;
+            _matchingService = matchingService;
         }
 
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(Student student)
+        [ProducesResponseType(typeof(ResponseStudentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create(IFormFile profilePhoto, [FromForm] StudentDTO studentDTO)
         {
-            _context.Student.Add(student);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetStudent", new { id = student.Id }, student);
+            return Ok(await _studentService.Create(studentDTO, profilePhoto));
         }
 
-        // DELETE: api/Students/5
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(ResponseStudentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            return Ok(await _studentService.GetById(id));
+        }
+
+        [HttpGet]
+        [Route("matching/{id}")]
+        [ProducesResponseType(typeof(List<ResponseStudentDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllMatching(Guid id)
+        {
+            return Ok(await _matchingService.GetAllMatchingStudents(id));
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ResponseStudentDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _studentService.GetAll());
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ResponseStudentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update(Guid id, UpdateStudentDTO studentDTO)
+        {
+            return Ok(await _studentService.Update(id, studentDTO));
+        }
+
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent(Guid id)
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var student = await _context.Student.FindAsync(id);
-            if (student == null)
-            {
-                return NotFound();
-            }
+            await _studentService.Delete(id);
 
-            _context.Student.Remove(student);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool StudentExists(Guid id)
-        {
-            return _context.Student.Any(e => e.Id == id);
+            return Ok(id);
         }
     }
 }

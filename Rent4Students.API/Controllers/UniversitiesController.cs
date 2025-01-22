@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Rent4Students.Application.DTOs.Listing;
+using Rent4Students.Application.DTOs.University;
+using Rent4Students.Application.Services;
+using Rent4Students.Application.Services.Interfaces;
 using Rent4Students.Domain.Entities;
 using Rent4Students.Infrastructure.Data;
 
@@ -14,95 +18,55 @@ namespace Rent4Students.API.Controllers
     [ApiController]
     public class UniversitiesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUniversityService _universityService;
 
-        public UniversitiesController(ApplicationDbContext context)
+        public UniversitiesController(IUniversityService universityService)
         {
-            _context = context;
-        }
-
-        // GET: api/Universities
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<University>>> GetUniversity()
-        {
-            return await _context.University.ToListAsync();
-        }
-
-        // GET: api/Universities/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<University>> GetUniversity(Guid id)
-        {
-            var university = await _context.University.FindAsync(id);
-
-            if (university == null)
-            {
-                return NotFound();
-            }
-
-            return university;
-        }
-
-        // PUT: api/Universities/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUniversity(Guid id, University university)
-        {
-            if (id != university.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(university).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UniversityExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            _universityService = universityService;
         }
 
         // POST: api/Universities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<University>> PostUniversity(University university)
+        [ProducesResponseType(typeof(ResponseUniversityDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateUniversity(UniversityDTO universityDTO)
         {
-            _context.University.Add(university);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUniversity", new { id = university.Id }, university);
+            return Ok(await _universityService.Create(universityDTO));
         }
 
-        // DELETE: api/Universities/5
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(ResponseUniversityDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            return Ok(await _universityService.GetById(id));
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ResponseUniversityDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _universityService.GetAll());
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ResponseUniversityDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update(Guid id, UniversityDTO universityDTO)
+        {
+            return Ok(await _universityService.Update(universityDTO));
+        }
+
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUniversity(Guid id)
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var university = await _context.University.FindAsync(id);
-            if (university == null)
-            {
-                return NotFound();
-            }
+            await _universityService.Delete(id);
 
-            _context.University.Remove(university);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool UniversityExists(Guid id)
-        {
-            return _context.University.Any(e => e.Id == id);
+            return Ok(id);
         }
     }
 }

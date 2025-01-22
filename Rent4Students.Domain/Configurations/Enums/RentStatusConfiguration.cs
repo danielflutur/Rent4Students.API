@@ -6,9 +6,5 @@ namespace Rent4Students.Domain.Configurations.Enums
 {
     public class RentStatusConfiguration : BaseEnumEntityConfiguration<RentStatus>
     {
-        public override void Configure(EntityTypeBuilder<RentStatus> builder)
-        {
-            base.Configure(builder);
-        }
     }
 }

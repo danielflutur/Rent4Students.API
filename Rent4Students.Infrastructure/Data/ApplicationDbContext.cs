@@ -18,22 +18,25 @@ namespace Rent4Students.Infrastructure.Data
         public DbSet<Listing> Listing { get; set; }
         public DbSet<FinancialHelpDocument> FinancialHelpDocument { get; set; }
         public DbSet<Faculty> Faculty { get; set; }
-        public DbSet<DocumentStorage> DocumentStorage { get; set; }
         public DbSet<Agency> Agency { get; set; }
         public DbSet<Address> Address { get; set; }
+        public DbSet<Allergy> Allergy { get; set; }
         public DbSet<DocumentStatus> DocumentStatus { get; set; }
         public DbSet<DocumentType> DocumentType { get; set; }
+        public DbSet<Gender> Gender { get; set; }
+        public DbSet<Hobby> Hobby { get; set; }
         public DbSet<ListingFeature> ListingFeature { get; set; }
         public DbSet<ListingType> ListingType { get; set; }
-        public DbSet<RentStatus> RentStatus { get; set; }
         public DbSet<Nationality> Nationality { get; set; }
-        public DbSet<UserFeature> UserFeature { get; set; }
+        public DbSet<PersonalityAttribute> PersonalityAttribute { get; set; }
+        public DbSet<RentStatus> RentStatus { get; set; }
         public DbSet<LivingAmenity> LivingAmenity { get; set; }
         public DbSet<LivingPreference> LivingPreference { get; set; }
         public DbSet<RentHistory> RentHistory { get; set; }
-        public DbSet<StudentAttribute> StudentAttribute { get; set; }
+        public DbSet<StudentAllergies> StudentAllergies{ get; set; }
+        public DbSet<StudentAttributes> StudentAttributes { get; set; }
+        public DbSet<StudentHobbies> StudentHobbies { get; set; }
         public DbSet<StudentRoommate> StudentRoommate { get; set; }
-
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -50,20 +53,24 @@ namespace Rent4Students.Infrastructure.Data
             new ListingConfiguration().Configure(modelBuilder.Entity<Listing>());
             new FinancialHelpDocumentConfiguration().Configure(modelBuilder.Entity<FinancialHelpDocument>());
             new FacultyConfiguration().Configure(modelBuilder.Entity<Faculty>());
-            new DocumentStorageConfiguration().Configure(modelBuilder.Entity<DocumentStorage>());
             new AgencyConfiguration().Configure(modelBuilder.Entity<Agency>());
             new AddressConfiguration().Configure(modelBuilder.Entity<Address>());
+            new AllergyConfiguration().Configure(modelBuilder.Entity<Allergy>());
             new DocumentStatusConfiguration().Configure(modelBuilder.Entity<DocumentStatus>());
             new DocumentTypeConfiguration().Configure(modelBuilder.Entity<DocumentType>());
+            new GenderConfiguration().Configure(modelBuilder.Entity<Gender>());
+            new HobbyConfiguration().Configure(modelBuilder.Entity<Hobby>());
             new ListingFeatureConfiguration().Configure(modelBuilder.Entity<ListingFeature>());
             new ListingTypeConfiguration().Configure(modelBuilder.Entity<ListingType>());
-            new RentStatusConfiguration().Configure(modelBuilder.Entity<RentStatus>());
             new NationalityConfiguration().Configure(modelBuilder.Entity<Nationality>());
-            new UserFeatureConfiguration().Configure(modelBuilder.Entity<UserFeature>());
+            new PersonalityAttributeConfiguration().Configure(modelBuilder.Entity<PersonalityAttribute>());
+            new RentStatusConfiguration().Configure(modelBuilder.Entity<RentStatus>());
             new LivingAmenityConfiguration().Configure(modelBuilder.Entity<LivingAmenity>());
             new LivingPreferenceConfiguration().Configure(modelBuilder.Entity<LivingPreference>());
             new RentHistoryConfiguration().Configure(modelBuilder.Entity<RentHistory>());
-            new StudentAttributeConfiguration().Configure(modelBuilder.Entity<StudentAttribute>());
+            new StudentAllergiesConfiguration().Configure(modelBuilder.Entity<StudentAllergies>());
+            new StudentAttributesConfiguration().Configure(modelBuilder.Entity<StudentAttributes>());
+            new StudentHobbiesConfiguration().Configure(modelBuilder.Entity<StudentHobbies>());
             new StudentRoommateConfiguration().Configure(modelBuilder.Entity<StudentRoommate>());
 
             AddDefaultEnums(modelBuilder);
@@ -71,13 +78,44 @@ namespace Rent4Students.Infrastructure.Data
 
         private void AddDefaultEnums(ModelBuilder modelBuilder)
         {
+            AddAllergies(modelBuilder);
             AddDocumentStatuses(modelBuilder);
             AddDocumentTypes(modelBuilder);
+            AddGenders(modelBuilder);
+            AddHobbies(modelBuilder);
             AddListingFeatures(modelBuilder);
             AddListingTypes(modelBuilder);
-            AddRentStatuses(modelBuilder);
             AddNationalities(modelBuilder);
-            AddUserFeatures(modelBuilder);
+            AddPersonalityAttributes(modelBuilder);
+            AddRentStatuses(modelBuilder);
+        }
+
+        private void AddAllergies(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Allergy>().HasData
+            (
+                new Allergy { Id = 1, Name = "No Allergies" },
+                new Allergy { Id = 2, Name = "Peanuts/Nuts" },
+                new Allergy { Id = 3, Name = "Dairy" },
+                new Allergy { Id = 4, Name = "Eggs" },
+                new Allergy { Id = 5, Name = "Wheat" },
+                new Allergy { Id = 6, Name = "Soy" },
+                new Allergy { Id = 7, Name = "Fish" },
+                new Allergy { Id = 8, Name = "Pollen" },
+                new Allergy { Id = 9, Name = "Dust Mites" },
+                new Allergy { Id = 10, Name = "Mold" },
+                new Allergy { Id = 11, Name = "Cats" },
+                new Allergy { Id = 12, Name = "Dogs" },
+                new Allergy { Id = 13, Name = "Latex" },
+                new Allergy { Id = 14, Name = "Fragrances" },
+                new Allergy { Id = 15, Name = "Cosmetic Products" },
+                new Allergy { Id = 16, Name = "Detergents and Soaps" },
+                new Allergy { Id = 17, Name = "Bee Stings" },
+                new Allergy { Id = 18, Name = "Wasp Stings" },
+                new Allergy { Id = 19, Name = "Ant Stings" },
+                new Allergy { Id = 20, Name = "Medications" },
+                new Allergy { Id = 21, Name = "Other" }
+            );
         }
 
         private void AddDocumentStatuses(ModelBuilder modelBuilder)
@@ -95,6 +133,87 @@ namespace Rent4Students.Infrastructure.Data
             var financialHelp = new DocumentType { Id = 2, Name = "FinancialHelp" };
             
             modelBuilder.Entity<DocumentType>().HasData(rentContract, financialHelp); 
+        }
+       
+        private void AddGenders(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Gender>().HasData
+            (
+                new Gender { Id = 1, Name = "Male" },
+                new Gender { Id = 2, Name = "Female" },
+                new Gender { Id = 3, Name = "Other" }
+            );
+        }
+
+        private void AddHobbies(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Hobby>().HasData(
+                new Hobby { Id = 1, Name = "Painting" },
+                new Hobby { Id = 2, Name = "Singing" },
+                new Hobby { Id = 3, Name = "Calligraphy" },
+                new Hobby { Id = 4, Name = "Photography" },
+                new Hobby { Id = 5, Name = "Graphic Design" },
+                new Hobby { Id = 6, Name = "Playing an Instrument" },
+                new Hobby { Id = 7, Name = "Knitting/Crocheting" },
+                new Hobby { Id = 8, Name = "Sewing/Fashion Design" },
+                new Hobby { Id = 9, Name = "Dancing" },
+                new Hobby { Id = 10, Name = "Stand-up Comedy" },
+                new Hobby { Id = 11, Name = "Magic Tricks" },
+                new Hobby { Id = 12, Name = "Writing" },
+                new Hobby { Id = 13, Name = "Reading" },
+                new Hobby { Id = 14, Name = "Blogging" },
+                new Hobby { Id = 15, Name = "Running/Jogging" },
+                new Hobby { Id = 16, Name = "Yoga" },
+                new Hobby { Id = 17, Name = "Pilates" },
+                new Hobby { Id = 18, Name = "Swimming" },
+                new Hobby { Id = 19, Name = "Hiking" },
+                new Hobby { Id = 20, Name = "Cycling" },
+                new Hobby { Id = 21, Name = "Martial Arts" },
+                new Hobby { Id = 22, Name = "Football" },
+                new Hobby { Id = 23, Name = "Basketball" },
+                new Hobby { Id = 24, Name = "Volleyball" },
+                new Hobby { Id = 25, Name = "Handball" },
+                new Hobby { Id = 26, Name = "Rock Climbing" },
+                new Hobby { Id = 27, Name = "Gymnastics" },
+                new Hobby { Id = 28, Name = "Gaming" },
+                new Hobby { Id = 29, Name = "Programming/Coding" },
+                new Hobby { Id = 30, Name = "Drawing" },
+                new Hobby { Id = 31, Name = "Robotics" },
+                new Hobby { Id = 32, Name = "VR" },
+                new Hobby { Id = 33, Name = "3D Printing" },
+                new Hobby { Id = 34, Name = "Drone Flying" },
+                new Hobby { Id = 35, Name = "Cooking" },
+                new Hobby { Id = 36, Name = "Baking" },
+                new Hobby { Id = 37, Name = "Coffee Brewing" },
+                new Hobby { Id = 38, Name = "Cake Decorating" },
+                new Hobby { Id = 39, Name = "Gardening" },
+                new Hobby { Id = 40, Name = "Bird Watching" },
+                new Hobby { Id = 41, Name = "Camping" },
+                new Hobby { Id = 42, Name = "Fishing" },
+                new Hobby { Id = 43, Name = "Geocaching" },
+                new Hobby { Id = 44, Name = "Stargazingg" },
+                new Hobby { Id = 45, Name = "Collecting Stamps" },
+                new Hobby { Id = 46, Name = "Coin Collecting" },
+                new Hobby { Id = 47, Name = "Collecting Action Figures" },
+                new Hobby { Id = 48, Name = "Vinyl Records Collecting" },
+                new Hobby { Id = 49, Name = "Fossil or Rock Collecting" },
+                new Hobby { Id = 50, Name = "Model Building" },
+                new Hobby { Id = 51, Name = "Origami" },
+                new Hobby { Id = 52, Name = "Beadwork" },
+                new Hobby { Id = 53, Name = "Puzzles" },
+                new Hobby { Id = 54, Name = "Chess" },
+                new Hobby { Id = 55, Name = "Sudoku" },
+                new Hobby { Id = 56, Name = "Traveling" },
+                new Hobby { Id = 57, Name = "Road Tripping" },
+                new Hobby { Id = 58, Name = "Backpacking" },
+                new Hobby { Id = 59, Name = "Movie Watching" },
+                new Hobby { Id = 60, Name = "Podcasting" },
+                new Hobby { Id = 61, Name = "Streaming/Content Creation" },
+                new Hobby { Id = 62, Name = "Astrology" },
+                new Hobby { Id = 63, Name = "Cosplaying" },
+                new Hobby { Id = 64, Name = "Parkour" },
+                new Hobby { Id = 65, Name = "Other" }
+                );
         }
 
         private void AddListingFeatures(ModelBuilder modelBuilder)
@@ -198,191 +317,96 @@ namespace Rent4Students.Infrastructure.Data
             modelBuilder.Entity<RentStatus>().HasData(active, inactive);
         }
 
-        private void AddUserFeatures(ModelBuilder modelBuilder)
+        private void AddPersonalityAttributes(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserFeature>().HasData
+            modelBuilder.Entity<PersonalityAttribute>().HasData
             (
-                new UserFeature { Id = 1, Name = "Gender", Value = "Male" },
-                new UserFeature { Id = 2, Name = "Gender", Value = "Female" },
-                new UserFeature { Id = 3, Name = "Gender", Value = "Other" },
-                new UserFeature { Id = 4, Name = "Occupation", Value = "Part-Time Job" },
-                new UserFeature { Id = 5, Name = "Occupation", Value = "Full-Time Job" },
-                new UserFeature { Id = 6, Name = "Occupation", Value = "Student" },
-                new UserFeature { Id = 7, Name = "YearOfStudy", Value = "1" },
-                new UserFeature { Id = 8, Name = "YearOfStudy", Value = "2" },
-                new UserFeature { Id = 9, Name = "YearOfStudy", Value = "3" },
-                new UserFeature { Id = 10, Name = "YearOfStudy", Value = "4" },
-                new UserFeature { Id = 11, Name = "YearOfStudy", Value = "5" },
-                new UserFeature { Id = 12, Name = "YearOfStudy", Value = "6" },
-                new UserFeature { Id = 13, Name = "ReligiousBeliefs", Value = "Orthodoxy" },
-                new UserFeature { Id = 14, Name = "ReligiousBeliefs", Value = "Romano Catholicism" },
-                new UserFeature { Id = 15, Name = "ReligiousBeliefs", Value = "Greek Catholicism" },
-                new UserFeature { Id = 16, Name = "ReligiousBeliefs", Value = "Calvinist" },
-                new UserFeature { Id = 17, Name = "ReligiousBeliefs", Value = "Lutheran" },
-                new UserFeature { Id = 18, Name = "ReligiousBeliefs", Value = "Pentecostal Christian" },
-                new UserFeature { Id = 19, Name = "ReligiousBeliefs", Value = "Islam" },
-                new UserFeature { Id = 20, Name = "ReligiousBeliefs", Value = "Judaism" },
-                new UserFeature { Id = 21, Name = "ReligiousBeliefs", Value = "Baptist" },
-                new UserFeature { Id = 22, Name = "ReligiousBeliefs", Value = "Atheism/Agnosticism" },
-                new UserFeature { Id = 23, Name = "ReligiousBeliefs", Value = "Adventist" },
-                new UserFeature { Id = 24, Name = "ReligiousBeliefs", Value = "Jehovah’s Witnesses" },
-                new UserFeature { Id = 25, Name = "ReligiousBeliefs", Value = "Buddhism" },
-                new UserFeature { Id = 26, Name = "ReligiousBeliefs", Value = "Hindu" },
-                new UserFeature { Id = 27, Name = "ReligiousBeliefs", Value = "Other" },
-                new UserFeature { Id = 28, Name = "DietaryPreferences", Value = "No Preferences" },
-                new UserFeature { Id = 29, Name = "DietaryPreferences", Value = "Vegetarian" },
-                new UserFeature { Id = 30, Name = "DietaryPreferences", Value = "Vegan" },
-                new UserFeature { Id = 31, Name = "DietaryPreferences", Value = "Pescatarian" },
-                new UserFeature { Id = 32, Name = "DietaryPreferences", Value = "Gluten-Free" },
-                new UserFeature { Id = 33, Name = "DietaryPreferences", Value = "Lactose-Free" },
-                new UserFeature { Id = 34, Name = "DietaryPreferences", Value = "Keto" },
-                new UserFeature { Id = 35, Name = "DietaryPreferences", Value = "Diabetic-Friendly" },
-                new UserFeature { Id = 36, Name = "DietaryPreferences", Value = "Halal" },
-                new UserFeature { Id = 37, Name = "DietaryPreferences", Value = "Kosher" },
-                new UserFeature { Id = 38, Name = "DietaryPreferences", Value = "Organic" },
-                new UserFeature { Id = 39, Name = "DietaryPreferences", Value = "Other" },
-                new UserFeature { Id = 40, Name = "Allergies", Value = "No Allergies" },
-                new UserFeature { Id = 41, Name = "Allergies", Value = "Peanuts/Nuts" },
-                new UserFeature { Id = 42, Name = "Allergies", Value = "Dairy" },
-                new UserFeature { Id = 43, Name = "Allergies", Value = "Eggs" },
-                new UserFeature { Id = 44, Name = "Allergies", Value = "Wheat" },
-                new UserFeature { Id = 45, Name = "Allergies", Value = "Soy" },
-                new UserFeature { Id = 46, Name = "Allergies", Value = "Fish" },
-                new UserFeature { Id = 47, Name = "Allergies", Value = "Pollen" },
-                new UserFeature { Id = 48, Name = "Allergies", Value = "Dust Mites" },
-                new UserFeature { Id = 49, Name = "Allergies", Value = "Mold" },
-                new UserFeature { Id = 50, Name = "Allergies", Value = "Cats" },
-                new UserFeature { Id = 51, Name = "Allergies", Value = "Dogs" },
-                new UserFeature { Id = 52, Name = "Allergies", Value = "Latex" },
-                new UserFeature { Id = 53, Name = "Allergies", Value = "Fragrances" },
-                new UserFeature { Id = 54, Name = "Allergies", Value = "Cosmetic Products" },
-                new UserFeature { Id = 55, Name = "Allergies", Value = "Detergents and Soaps" },
-                new UserFeature { Id = 56, Name = "Allergies", Value = "Bee Stings" },
-                new UserFeature { Id = 57, Name = "Allergies", Value = "Wasp Stings" },
-                new UserFeature { Id = 58, Name = "Allergies", Value = "Ant Stings" },
-                new UserFeature { Id = 59, Name = "Allergies", Value = "Medications" },
-                new UserFeature { Id = 60, Name = "Allergies", Value = "Other" },
-                new UserFeature { Id = 61, Name = "SleepingHours", Value = "Early Bird" },
-                new UserFeature { Id = 62, Name = "SleepingHours", Value = "Night Owl" },
-                new UserFeature { Id = 63, Name = "SleepingHours", Value = "Flexible" },
-                new UserFeature { Id = 64, Name = "SleepingHours", Value = "Other" },
-                new UserFeature { Id = 65, Name = "SmokingHabbits", Value = "Smoker" },
-                new UserFeature { Id = 66, Name = "SmokingHabbits", Value = "Non-Smoker" },
-                new UserFeature { Id = 67, Name = "SmokingHabbits", Value = "Doesn't Mind" },
-                new UserFeature { Id = 68, Name = "AlcoholConsumption", Value = "Regular" },
-                new UserFeature { Id = 69, Name = "AlcoholConsumption", Value = "Social" },
-                new UserFeature { Id = 70, Name = "AlcoholConsumption", Value = "Rarely" },
-                new UserFeature { Id = 71, Name = "AlcoholConsumption", Value = "Never" },
-                new UserFeature { Id = 72, Name = "PetOwnership", Value = "No" },
-                new UserFeature { Id = 73, Name = "PetOwnership", Value = "Cat" },
-                new UserFeature { Id = 74, Name = "PetOwnership", Value = "Dog" },
-                new UserFeature { Id = 75, Name = "PetOwnership", Value = "Bird" },
-                new UserFeature { Id = 76, Name = "PetOwnership", Value = "Fish" },
-                new UserFeature { Id = 77, Name = "PetOwnership", Value = "Rodent" },
-                new UserFeature { Id = 78, Name = "PetOwnership", Value = "Other" },
-                new UserFeature { Id = 79, Name = "PetPreferences", Value = "Likes Pets" },
-                new UserFeature { Id = 80, Name = "PetPreferences", Value = "Doesn't Likes Pets" },
-                new UserFeature { Id = 81, Name = "PetPreferences", Value = "Allergic" },
-                new UserFeature { Id = 82, Name = "PetPreferences", Value = "No Preference" },
-                new UserFeature { Id = 83, Name = "NoiseTolerance", Value = "Quiet" },
-                new UserFeature { Id = 84, Name = "NoiseTolerance", Value = "Moderate" },
-                new UserFeature { Id = 85, Name = "NoiseTolerance", Value = "Doesn't Mind" },
-                new UserFeature { Id = 86, Name = "CleanlinessLevel", Value = "Very Clean" },
-                new UserFeature { Id = 87, Name = "CleanlinessLevel", Value = "Moderate" },
-                new UserFeature { Id = 88, Name = "CleanlinessLevel", Value = "Laid-Back" },
-                new UserFeature { Id = 89, Name = "CookingHabbits", Value = "Loves Cooking" },
-                new UserFeature { Id = 90, Name = "CookingHabbits", Value = "Cooks Occasionally" },
-                new UserFeature { Id = 91, Name = "CookingHabbits", Value = "Doesn't Cook" },
-                new UserFeature { Id = 92, Name = "PreferedLivingArrangement", Value = "Private Room" },
-                new UserFeature { Id = 93, Name = "PreferedLivingArrangement", Value = "Shared Room" },
-                new UserFeature { Id = 94, Name = "PreferedLivingArrangement", Value = "Doesn't Mind" },
-                new UserFeature { Id = 95, Name = "Hobbies", Value = "Drawing" },
-                new UserFeature { Id = 96, Name = "Hobbies", Value = "Painting" },
-                new UserFeature { Id = 97, Name = "Hobbies", Value = "Singing" },
-                new UserFeature { Id = 98, Name = "Hobbies", Value = "Calligraphy" },
-                new UserFeature { Id = 99, Name = "Hobbies", Value = "Photography" },
-                new UserFeature { Id = 100, Name = "Hobbies", Value = "Graphic Design" },
-                new UserFeature { Id = 101, Name = "Hobbies", Value = "Playing an Instrument" },
-                new UserFeature { Id = 102, Name = "Hobbies", Value = "Knitting/Crocheting" },
-                new UserFeature { Id = 103, Name = "Hobbies", Value = "Sewing/Fashion Design" },
-                new UserFeature { Id = 104, Name = "Hobbies", Value = "Dancing" },
-                new UserFeature { Id = 105, Name = "Hobbies", Value = "Stand-up Comedy" },
-                new UserFeature { Id = 106, Name = "Hobbies", Value = "Magic Tricks" },
-                new UserFeature { Id = 107, Name = "Hobbies", Value = "Writing" },
-                new UserFeature { Id = 108, Name = "Hobbies", Value = "Reading" },
-                new UserFeature { Id = 109, Name = "Hobbies", Value = "Blogging" },
-                new UserFeature { Id = 110, Name = "Hobbies", Value = "Running/Jogging" },
-                new UserFeature { Id = 111, Name = "Hobbies", Value = "Yoga" },
-                new UserFeature { Id = 112, Name = "Hobbies", Value = "Pilates" },
-                new UserFeature { Id = 113, Name = "Hobbies", Value = "Swimming" },
-                new UserFeature { Id = 114, Name = "Hobbies", Value = "Hiking" },
-                new UserFeature { Id = 115, Name = "Hobbies", Value = "Cycling" },
-                new UserFeature { Id = 116, Name = "Hobbies", Value = "Martial Arts" },
-                new UserFeature { Id = 117, Name = "Hobbies", Value = "Football" },
-                new UserFeature { Id = 118, Name = "Hobbies", Value = "Basketball" },
-                new UserFeature { Id = 119, Name = "Hobbies", Value = "Volleyball" },
-                new UserFeature { Id = 120, Name = "Hobbies", Value = "Handball" },
-                new UserFeature { Id = 121, Name = "Hobbies", Value = "Rock Climbing" },
-                new UserFeature { Id = 122, Name = "Hobbies", Value = "Gymnastics" },
-                new UserFeature { Id = 123, Name = "Hobbies", Value = "Gaming" },
-                new UserFeature { Id = 124, Name = "Hobbies", Value = "Programming/Coding" },
-                new UserFeature { Id = 125, Name = "Hobbies", Value = "Robotics" },
-                new UserFeature { Id = 126, Name = "Hobbies", Value = "VR" },
-                new UserFeature { Id = 127, Name = "Hobbies", Value = "3D Printing" },
-                new UserFeature { Id = 128, Name = "Hobbies", Value = "Drone Flying" },
-                new UserFeature { Id = 129, Name = "Hobbies", Value = "Cooking" },
-                new UserFeature { Id = 130, Name = "Hobbies", Value = "Baking" },
-                new UserFeature { Id = 131, Name = "Hobbies", Value = "Coffee Brewing" },
-                new UserFeature { Id = 132, Name = "Hobbies", Value = "Cake Decorating" },
-                new UserFeature { Id = 133, Name = "Hobbies", Value = "Gardening" },
-                new UserFeature { Id = 134, Name = "Hobbies", Value = "Bird Watching" },
-                new UserFeature { Id = 135, Name = "Hobbies", Value = "Camping" },
-                new UserFeature { Id = 136, Name = "Hobbies", Value = "Fishing" },
-                new UserFeature { Id = 137, Name = "Hobbies", Value = "Geocaching" },
-                new UserFeature { Id = 138, Name = "Hobbies", Value = "Stargazingg" },
-                new UserFeature { Id = 139, Name = "Hobbies", Value = "Collecting Stamps" },
-                new UserFeature { Id = 140, Name = "Hobbies", Value = "Coin Collecting" },
-                new UserFeature { Id = 141, Name = "Hobbies", Value = "Collecting Action Figures" },
-                new UserFeature { Id = 142, Name = "Hobbies", Value = "Vinyl Records Collecting" },
-                new UserFeature { Id = 143, Name = "Hobbies", Value = "Fossil or Rock Collecting" },
-                new UserFeature { Id = 144, Name = "Hobbies", Value = "Model Building" },
-                new UserFeature { Id = 145, Name = "Hobbies", Value = "Origami" },
-                new UserFeature { Id = 146, Name = "Hobbies", Value = "Beadwork" },
-                new UserFeature { Id = 147, Name = "Hobbies", Value = "Puzzles" },
-                new UserFeature { Id = 148, Name = "Hobbies", Value = "Chess" },
-                new UserFeature { Id = 149, Name = "Hobbies", Value = "Sudoku" },
-                new UserFeature { Id = 150, Name = "Hobbies", Value = "Traveling" },
-                new UserFeature { Id = 151, Name = "Hobbies", Value = "Road Tripping" },
-                new UserFeature { Id = 152, Name = "Hobbies", Value = "Backpacking" },
-                new UserFeature { Id = 153, Name = "Hobbies", Value = "Movie Watching" },
-                new UserFeature { Id = 154, Name = "Hobbies", Value = "Podcasting" },
-                new UserFeature { Id = 155, Name = "Hobbies", Value = "Streaming/Content Creation" },
-                new UserFeature { Id = 156, Name = "Hobbies", Value = "Astrology" },
-                new UserFeature { Id = 157, Name = "Hobbies", Value = "Cosplaying" },
-                new UserFeature { Id = 158, Name = "Hobbies", Value = "Parkour" },
-                new UserFeature { Id = 159, Name = "Hobbies", Value = "Other" },
-                new UserFeature { Id = 160, Name = "ExerciseRoutine", Value = "Gym Regular" },
-                new UserFeature { Id = 161, Name = "ExerciseRoutine", Value = "Outdoor Activities" },
-                new UserFeature { Id = 162, Name = "ExerciseRoutine", Value = "Doesn't Exercise Regularly" },
-                new UserFeature { Id = 163, Name = "SocialHabbits", Value = "Outgoing" },
-                new UserFeature { Id = 164, Name = "SocialHabbits", Value = "Introverted" },
-                new UserFeature { Id = 165, Name = "SocialHabbits", Value = "Balanced" },
-                new UserFeature { Id = 166, Name = "PrefferedRoommateGender", Value = "Same Gender" },
-                new UserFeature { Id = 167, Name = "PrefferedRoommateGender", Value = "No Preference" },
-                new UserFeature { Id = 168, Name = "GuestsTolerance", Value = "Frequent Visitors" },
-                new UserFeature { Id = 169, Name = "GuestsTolerance", Value = "Rarely" },
-                new UserFeature { Id = 170, Name = "GuestsTolerance", Value = "No Visitors" },
-                new UserFeature { Id = 171, Name = "StudyEnvironment", Value = "Quiet" },
-                new UserFeature { Id = 172, Name = "StudyEnvironment", Value = "Collaborative" },
-                new UserFeature { Id = 173, Name = "StudyEnvironment", Value = "No Preference" },
-                new UserFeature { Id = 174, Name = "PrefferedCommunicationMeans", Value = "Text" },
-                new UserFeature { Id = 175, Name = "PrefferedCommunicationMeans", Value = "Calls" },
-                new UserFeature { Id = 176, Name = "PrefferedCommunicationMeans", Value = "Face-to-face" },
-                new UserFeature { Id = 177, Name = "PersonalityType", Value = "Intorvert" },
-                new UserFeature { Id = 178, Name = "PersonalityType", Value = "Extrovert" },
-                new UserFeature { Id = 179, Name = "ConflictResolutionStyle", Value = "Direct" },
-                new UserFeature { Id = 180, Name = "ConflictResolutionStyle", Value = "Passive" },
-                new UserFeature { Id = 181, Name = "ConflictResolutionStyle", Value = "Mediator" }
+                new PersonalityAttribute { Id = 1, Name = "Occupation", Value = "Part-Time Job" },
+                new PersonalityAttribute { Id = 2, Name = "Occupation", Value = "Full-Time Job" },
+                new PersonalityAttribute { Id = 3, Name = "Occupation", Value = "Student" },
+                new PersonalityAttribute { Id = 4, Name = "ReligiousBeliefs", Value = "Orthodoxy" },
+                new PersonalityAttribute { Id = 5, Name = "ReligiousBeliefs", Value = "Romano Catholicism" },
+                new PersonalityAttribute { Id = 6, Name = "ReligiousBeliefs", Value = "Greek Catholicism" },
+                new PersonalityAttribute { Id = 7, Name = "ReligiousBeliefs", Value = "Calvinist" },
+                new PersonalityAttribute { Id = 8, Name = "ReligiousBeliefs", Value = "Lutheran" },
+                new PersonalityAttribute { Id = 9, Name = "ReligiousBeliefs", Value = "Pentecostal Christian" },
+                new PersonalityAttribute { Id = 10, Name = "ReligiousBeliefs", Value = "Islam" },
+                new PersonalityAttribute { Id = 11, Name = "ReligiousBeliefs", Value = "Judaism" },
+                new PersonalityAttribute { Id = 12, Name = "ReligiousBeliefs", Value = "Baptist" },
+                new PersonalityAttribute { Id = 13, Name = "ReligiousBeliefs", Value = "Atheism/Agnosticism" },
+                new PersonalityAttribute { Id = 14, Name = "ReligiousBeliefs", Value = "Adventist" },
+                new PersonalityAttribute { Id = 15, Name = "ReligiousBeliefs", Value = "Jehovah’s Witnesses" },
+                new PersonalityAttribute { Id = 16, Name = "ReligiousBeliefs", Value = "Buddhism" },
+                new PersonalityAttribute { Id = 17, Name = "ReligiousBeliefs", Value = "Hindu" },
+                new PersonalityAttribute { Id = 18, Name = "ReligiousBeliefs", Value = "Other" },
+                new PersonalityAttribute { Id = 19, Name = "DietaryPreferences", Value = "No Preferences" },
+                new PersonalityAttribute { Id = 20, Name = "DietaryPreferences", Value = "Vegetarian" },
+                new PersonalityAttribute { Id = 21, Name = "DietaryPreferences", Value = "Vegan" },
+                new PersonalityAttribute { Id = 22, Name = "DietaryPreferences", Value = "Pescatarian" },
+                new PersonalityAttribute { Id = 23, Name = "DietaryPreferences", Value = "Gluten-Free" },
+                new PersonalityAttribute { Id = 24, Name = "DietaryPreferences", Value = "Lactose-Free" },
+                new PersonalityAttribute { Id = 25, Name = "DietaryPreferences", Value = "Keto" },
+                new PersonalityAttribute { Id = 26, Name = "DietaryPreferences", Value = "Diabetic-Friendly" },
+                new PersonalityAttribute { Id = 27, Name = "DietaryPreferences", Value = "Halal" },
+                new PersonalityAttribute { Id = 28, Name = "DietaryPreferences", Value = "Kosher" },
+                new PersonalityAttribute { Id = 29, Name = "DietaryPreferences", Value = "Organic" },
+                new PersonalityAttribute { Id = 30, Name = "DietaryPreferences", Value = "Other" },
+                new PersonalityAttribute { Id = 31, Name = "SleepingHours", Value = "Early Bird" },
+                new PersonalityAttribute { Id = 32, Name = "SleepingHours", Value = "Night Owl" },
+                new PersonalityAttribute { Id = 33, Name = "SleepingHours", Value = "Flexible" },
+                new PersonalityAttribute { Id = 34, Name = "SleepingHours", Value = "Other" },
+                new PersonalityAttribute { Id = 35, Name = "SmokingHabbits", Value = "Smoker" },
+                new PersonalityAttribute { Id = 36, Name = "SmokingHabbits", Value = "Non-Smoker" },
+                new PersonalityAttribute { Id = 37, Name = "SmokingHabbits", Value = "Doesn't Mind" },
+                new PersonalityAttribute { Id = 38, Name = "AlcoholConsumption", Value = "Regular" },
+                new PersonalityAttribute { Id = 39, Name = "AlcoholConsumption", Value = "Social" },
+                new PersonalityAttribute { Id = 40, Name = "AlcoholConsumption", Value = "Rarely" },
+                new PersonalityAttribute { Id = 41, Name = "AlcoholConsumption", Value = "Never" },
+                new PersonalityAttribute { Id = 42, Name = "PetOwnership", Value = "No" },
+                new PersonalityAttribute { Id = 43, Name = "PetOwnership", Value = "Cat" },
+                new PersonalityAttribute { Id = 44, Name = "PetOwnership", Value = "Dog" },
+                new PersonalityAttribute { Id = 45, Name = "PetOwnership", Value = "Bird" },
+                new PersonalityAttribute { Id = 46, Name = "PetOwnership", Value = "Fish" },
+                new PersonalityAttribute { Id = 47, Name = "PetOwnership", Value = "Rodent" },
+                new PersonalityAttribute { Id = 48, Name = "PetOwnership", Value = "Other" },
+                new PersonalityAttribute { Id = 49, Name = "PetPreferences", Value = "Likes Pets" },
+                new PersonalityAttribute { Id = 50, Name = "PetPreferences", Value = "Doesn't Likes Pets" },
+                new PersonalityAttribute { Id = 51, Name = "PetPreferences", Value = "Allergic" },
+                new PersonalityAttribute { Id = 52, Name = "PetPreferences", Value = "No Preference" },
+                new PersonalityAttribute { Id = 53, Name = "NoiseTolerance", Value = "Quiet" },
+                new PersonalityAttribute { Id = 54, Name = "NoiseTolerance", Value = "Moderate" },
+                new PersonalityAttribute { Id = 55, Name = "NoiseTolerance", Value = "Doesn't Mind" },
+                new PersonalityAttribute { Id = 56, Name = "CleanlinessLevel", Value = "Very Clean" },
+                new PersonalityAttribute { Id = 57, Name = "CleanlinessLevel", Value = "Moderate" },
+                new PersonalityAttribute { Id = 58, Name = "CleanlinessLevel", Value = "Laid-Back" },
+                new PersonalityAttribute { Id = 59, Name = "CookingHabbits", Value = "Loves Cooking" },
+                new PersonalityAttribute { Id = 60, Name = "CookingHabbits", Value = "Cooks Occasionally" },
+                new PersonalityAttribute { Id = 61, Name = "CookingHabbits", Value = "Doesn't Cook" },
+                new PersonalityAttribute { Id = 62, Name = "PreferedLivingArrangement", Value = "Private Room" },
+                new PersonalityAttribute { Id = 63, Name = "PreferedLivingArrangement", Value = "Shared Room" },
+                new PersonalityAttribute { Id = 64, Name = "PreferedLivingArrangement", Value = "Doesn't Mind" },
+                new PersonalityAttribute { Id = 65, Name = "ExerciseRoutine", Value = "Gym Regular" },
+                new PersonalityAttribute { Id = 66, Name = "ExerciseRoutine", Value = "Outdoor Activities" },
+                new PersonalityAttribute { Id = 67, Name = "ExerciseRoutine", Value = "Doesn't Exercise Regularly" },
+                new PersonalityAttribute { Id = 68, Name = "SocialHabbits", Value = "Outgoing" },
+                new PersonalityAttribute { Id = 69, Name = "SocialHabbits", Value = "Introverted" },
+                new PersonalityAttribute { Id = 70, Name = "SocialHabbits", Value = "Balanced" },
+                new PersonalityAttribute { Id = 71, Name = "PrefferedRoommateGender", Value = "Same Gender" },
+                new PersonalityAttribute { Id = 72, Name = "PrefferedRoommateGender", Value = "No Preference" },
+                new PersonalityAttribute { Id = 73, Name = "GuestsTolerance", Value = "Frequent Visitors" },
+                new PersonalityAttribute { Id = 74, Name = "GuestsTolerance", Value = "Rarely" },
+                new PersonalityAttribute { Id = 75, Name = "GuestsTolerance", Value = "No Visitors" },
+                new PersonalityAttribute { Id = 76, Name = "StudyEnvironment", Value = "Quiet" },
+                new PersonalityAttribute { Id = 77, Name = "StudyEnvironment", Value = "Collaborative" },
+                new PersonalityAttribute { Id = 78, Name = "StudyEnvironment", Value = "No Preference" },
+                new PersonalityAttribute { Id = 79, Name = "PrefferedCommunicationMeans", Value = "Text" },
+                new PersonalityAttribute { Id = 80, Name = "PrefferedCommunicationMeans", Value = "Calls" },
+                new PersonalityAttribute { Id = 81, Name = "PrefferedCommunicationMeans", Value = "Face-to-face" },
+                new PersonalityAttribute { Id = 82, Name = "PersonalityType", Value = "Intorvert" },
+                new PersonalityAttribute { Id = 83, Name = "PersonalityType", Value = "Extrovert" },
+                new PersonalityAttribute { Id = 84, Name = "ConflictResolutionStyle", Value = "Direct" },
+                new PersonalityAttribute { Id = 85, Name = "ConflictResolutionStyle", Value = "Passive" },
+                new PersonalityAttribute { Id = 86, Name = "ConflictResolutionStyle", Value = "Mediator" }
             );
         }
 

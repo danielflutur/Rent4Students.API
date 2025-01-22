@@ -28,17 +28,11 @@ namespace Rent4Students.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AppartmentNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuildingNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
+                    b.Property<string>("AddressDetails")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Country")
+                    b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -52,7 +46,7 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.Property<Guid?>("FacultyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("FloorNumber")
+                    b.Property<string>("GoogleMaps")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -61,16 +55,8 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.Property<Guid?>("ListingId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("PropertyOwnerId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("StreetAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("StudentId")
                         .HasColumnType("uniqueidentifier");
@@ -106,50 +92,128 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("Rent4Students.Domain.Entities.DocumentStorage", b =>
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.Allergy", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
-
-                    b.Property<string>("DocumentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DocumentStatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DocumentTypeId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("StorageURL")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DocumentStatusId");
+                    b.ToTable("Allergy");
 
-                    b.HasIndex("DocumentTypeId");
-
-                    b.ToTable("DocumentStorage");
-
-                    b.HasDiscriminator().HasValue("DocumentStorage");
-
-                    b.UseTphMappingStrategy();
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "No Allergies"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Peanuts/Nuts"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Dairy"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Eggs"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Wheat"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Soy"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Fish"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Pollen"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Dust Mites"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Mold"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Cats"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Dogs"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Latex"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Fragrances"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Cosmetic Products"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Detergents and Soaps"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Bee Stings"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "Wasp Stings"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "Ant Stings"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "Medications"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Name = "Other"
+                        });
                 });
 
             modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.DocumentStatus", b =>
@@ -212,6 +276,384 @@ namespace Rent4Students.Infrastructure.Migrations
                         {
                             Id = 2,
                             Name = "FinancialHelp"
+                        });
+                });
+
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.Gender", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Gender");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Male"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Female"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Other"
+                        });
+                });
+
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.Hobby", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Hobby");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Painting"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Singing"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Calligraphy"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Photography"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Graphic Design"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Playing an Instrument"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Knitting/Crocheting"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Sewing/Fashion Design"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Dancing"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Stand-up Comedy"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Magic Tricks"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Writing"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Reading"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Blogging"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Running/Jogging"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Yoga"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Pilates"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "Swimming"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "Hiking"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "Cycling"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Name = "Martial Arts"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Name = "Football"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Name = "Basketball"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Name = "Volleyball"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Name = "Handball"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Name = "Rock Climbing"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Name = "Gymnastics"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Name = "Gaming"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Name = "Programming/Coding"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Name = "Drawing"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Name = "Robotics"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Name = "VR"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Name = "3D Printing"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Name = "Drone Flying"
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Name = "Cooking"
+                        },
+                        new
+                        {
+                            Id = 36,
+                            Name = "Baking"
+                        },
+                        new
+                        {
+                            Id = 37,
+                            Name = "Coffee Brewing"
+                        },
+                        new
+                        {
+                            Id = 38,
+                            Name = "Cake Decorating"
+                        },
+                        new
+                        {
+                            Id = 39,
+                            Name = "Gardening"
+                        },
+                        new
+                        {
+                            Id = 40,
+                            Name = "Bird Watching"
+                        },
+                        new
+                        {
+                            Id = 41,
+                            Name = "Camping"
+                        },
+                        new
+                        {
+                            Id = 42,
+                            Name = "Fishing"
+                        },
+                        new
+                        {
+                            Id = 43,
+                            Name = "Geocaching"
+                        },
+                        new
+                        {
+                            Id = 44,
+                            Name = "Stargazingg"
+                        },
+                        new
+                        {
+                            Id = 45,
+                            Name = "Collecting Stamps"
+                        },
+                        new
+                        {
+                            Id = 46,
+                            Name = "Coin Collecting"
+                        },
+                        new
+                        {
+                            Id = 47,
+                            Name = "Collecting Action Figures"
+                        },
+                        new
+                        {
+                            Id = 48,
+                            Name = "Vinyl Records Collecting"
+                        },
+                        new
+                        {
+                            Id = 49,
+                            Name = "Fossil or Rock Collecting"
+                        },
+                        new
+                        {
+                            Id = 50,
+                            Name = "Model Building"
+                        },
+                        new
+                        {
+                            Id = 51,
+                            Name = "Origami"
+                        },
+                        new
+                        {
+                            Id = 52,
+                            Name = "Beadwork"
+                        },
+                        new
+                        {
+                            Id = 53,
+                            Name = "Puzzles"
+                        },
+                        new
+                        {
+                            Id = 54,
+                            Name = "Chess"
+                        },
+                        new
+                        {
+                            Id = 55,
+                            Name = "Sudoku"
+                        },
+                        new
+                        {
+                            Id = 56,
+                            Name = "Traveling"
+                        },
+                        new
+                        {
+                            Id = 57,
+                            Name = "Road Tripping"
+                        },
+                        new
+                        {
+                            Id = 58,
+                            Name = "Backpacking"
+                        },
+                        new
+                        {
+                            Id = 59,
+                            Name = "Movie Watching"
+                        },
+                        new
+                        {
+                            Id = 60,
+                            Name = "Podcasting"
+                        },
+                        new
+                        {
+                            Id = 61,
+                            Name = "Streaming/Content Creation"
+                        },
+                        new
+                        {
+                            Id = 62,
+                            Name = "Astrology"
+                        },
+                        new
+                        {
+                            Id = 63,
+                            Name = "Cosplaying"
+                        },
+                        new
+                        {
+                            Id = 64,
+                            Name = "Parkour"
+                        },
+                        new
+                        {
+                            Id = 65,
+                            Name = "Other"
                         });
                 });
 
@@ -1701,6 +2143,544 @@ namespace Rent4Students.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.PersonalityAttribute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PersonalityAttribute");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Occupation",
+                            Value = "Part-Time Job"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Occupation",
+                            Value = "Full-Time Job"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Occupation",
+                            Value = "Student"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "ReligiousBeliefs",
+                            Value = "Orthodoxy"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "ReligiousBeliefs",
+                            Value = "Romano Catholicism"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "ReligiousBeliefs",
+                            Value = "Greek Catholicism"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "ReligiousBeliefs",
+                            Value = "Calvinist"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "ReligiousBeliefs",
+                            Value = "Lutheran"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "ReligiousBeliefs",
+                            Value = "Pentecostal Christian"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "ReligiousBeliefs",
+                            Value = "Islam"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "ReligiousBeliefs",
+                            Value = "Judaism"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "ReligiousBeliefs",
+                            Value = "Baptist"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "ReligiousBeliefs",
+                            Value = "Atheism/Agnosticism"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "ReligiousBeliefs",
+                            Value = "Adventist"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "ReligiousBeliefs",
+                            Value = "Jehovah’s Witnesses"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "ReligiousBeliefs",
+                            Value = "Buddhism"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "ReligiousBeliefs",
+                            Value = "Hindu"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "ReligiousBeliefs",
+                            Value = "Other"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "DietaryPreferences",
+                            Value = "No Preferences"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "DietaryPreferences",
+                            Value = "Vegetarian"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Name = "DietaryPreferences",
+                            Value = "Vegan"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Name = "DietaryPreferences",
+                            Value = "Pescatarian"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Name = "DietaryPreferences",
+                            Value = "Gluten-Free"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Name = "DietaryPreferences",
+                            Value = "Lactose-Free"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Name = "DietaryPreferences",
+                            Value = "Keto"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Name = "DietaryPreferences",
+                            Value = "Diabetic-Friendly"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Name = "DietaryPreferences",
+                            Value = "Halal"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Name = "DietaryPreferences",
+                            Value = "Kosher"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Name = "DietaryPreferences",
+                            Value = "Organic"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Name = "DietaryPreferences",
+                            Value = "Other"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Name = "SleepingHours",
+                            Value = "Early Bird"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Name = "SleepingHours",
+                            Value = "Night Owl"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Name = "SleepingHours",
+                            Value = "Flexible"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Name = "SleepingHours",
+                            Value = "Other"
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Name = "SmokingHabbits",
+                            Value = "Smoker"
+                        },
+                        new
+                        {
+                            Id = 36,
+                            Name = "SmokingHabbits",
+                            Value = "Non-Smoker"
+                        },
+                        new
+                        {
+                            Id = 37,
+                            Name = "SmokingHabbits",
+                            Value = "Doesn't Mind"
+                        },
+                        new
+                        {
+                            Id = 38,
+                            Name = "AlcoholConsumption",
+                            Value = "Regular"
+                        },
+                        new
+                        {
+                            Id = 39,
+                            Name = "AlcoholConsumption",
+                            Value = "Social"
+                        },
+                        new
+                        {
+                            Id = 40,
+                            Name = "AlcoholConsumption",
+                            Value = "Rarely"
+                        },
+                        new
+                        {
+                            Id = 41,
+                            Name = "AlcoholConsumption",
+                            Value = "Never"
+                        },
+                        new
+                        {
+                            Id = 42,
+                            Name = "PetOwnership",
+                            Value = "No"
+                        },
+                        new
+                        {
+                            Id = 43,
+                            Name = "PetOwnership",
+                            Value = "Cat"
+                        },
+                        new
+                        {
+                            Id = 44,
+                            Name = "PetOwnership",
+                            Value = "Dog"
+                        },
+                        new
+                        {
+                            Id = 45,
+                            Name = "PetOwnership",
+                            Value = "Bird"
+                        },
+                        new
+                        {
+                            Id = 46,
+                            Name = "PetOwnership",
+                            Value = "Fish"
+                        },
+                        new
+                        {
+                            Id = 47,
+                            Name = "PetOwnership",
+                            Value = "Rodent"
+                        },
+                        new
+                        {
+                            Id = 48,
+                            Name = "PetOwnership",
+                            Value = "Other"
+                        },
+                        new
+                        {
+                            Id = 49,
+                            Name = "PetPreferences",
+                            Value = "Likes Pets"
+                        },
+                        new
+                        {
+                            Id = 50,
+                            Name = "PetPreferences",
+                            Value = "Doesn't Likes Pets"
+                        },
+                        new
+                        {
+                            Id = 51,
+                            Name = "PetPreferences",
+                            Value = "Allergic"
+                        },
+                        new
+                        {
+                            Id = 52,
+                            Name = "PetPreferences",
+                            Value = "No Preference"
+                        },
+                        new
+                        {
+                            Id = 53,
+                            Name = "NoiseTolerance",
+                            Value = "Quiet"
+                        },
+                        new
+                        {
+                            Id = 54,
+                            Name = "NoiseTolerance",
+                            Value = "Moderate"
+                        },
+                        new
+                        {
+                            Id = 55,
+                            Name = "NoiseTolerance",
+                            Value = "Doesn't Mind"
+                        },
+                        new
+                        {
+                            Id = 56,
+                            Name = "CleanlinessLevel",
+                            Value = "Very Clean"
+                        },
+                        new
+                        {
+                            Id = 57,
+                            Name = "CleanlinessLevel",
+                            Value = "Moderate"
+                        },
+                        new
+                        {
+                            Id = 58,
+                            Name = "CleanlinessLevel",
+                            Value = "Laid-Back"
+                        },
+                        new
+                        {
+                            Id = 59,
+                            Name = "CookingHabbits",
+                            Value = "Loves Cooking"
+                        },
+                        new
+                        {
+                            Id = 60,
+                            Name = "CookingHabbits",
+                            Value = "Cooks Occasionally"
+                        },
+                        new
+                        {
+                            Id = 61,
+                            Name = "CookingHabbits",
+                            Value = "Doesn't Cook"
+                        },
+                        new
+                        {
+                            Id = 62,
+                            Name = "PreferedLivingArrangement",
+                            Value = "Private Room"
+                        },
+                        new
+                        {
+                            Id = 63,
+                            Name = "PreferedLivingArrangement",
+                            Value = "Shared Room"
+                        },
+                        new
+                        {
+                            Id = 64,
+                            Name = "PreferedLivingArrangement",
+                            Value = "Doesn't Mind"
+                        },
+                        new
+                        {
+                            Id = 65,
+                            Name = "ExerciseRoutine",
+                            Value = "Gym Regular"
+                        },
+                        new
+                        {
+                            Id = 66,
+                            Name = "ExerciseRoutine",
+                            Value = "Outdoor Activities"
+                        },
+                        new
+                        {
+                            Id = 67,
+                            Name = "ExerciseRoutine",
+                            Value = "Doesn't Exercise Regularly"
+                        },
+                        new
+                        {
+                            Id = 68,
+                            Name = "SocialHabbits",
+                            Value = "Outgoing"
+                        },
+                        new
+                        {
+                            Id = 69,
+                            Name = "SocialHabbits",
+                            Value = "Introverted"
+                        },
+                        new
+                        {
+                            Id = 70,
+                            Name = "SocialHabbits",
+                            Value = "Balanced"
+                        },
+                        new
+                        {
+                            Id = 71,
+                            Name = "PrefferedRoommateGender",
+                            Value = "Same Gender"
+                        },
+                        new
+                        {
+                            Id = 72,
+                            Name = "PrefferedRoommateGender",
+                            Value = "No Preference"
+                        },
+                        new
+                        {
+                            Id = 73,
+                            Name = "GuestsTolerance",
+                            Value = "Frequent Visitors"
+                        },
+                        new
+                        {
+                            Id = 74,
+                            Name = "GuestsTolerance",
+                            Value = "Rarely"
+                        },
+                        new
+                        {
+                            Id = 75,
+                            Name = "GuestsTolerance",
+                            Value = "No Visitors"
+                        },
+                        new
+                        {
+                            Id = 76,
+                            Name = "StudyEnvironment",
+                            Value = "Quiet"
+                        },
+                        new
+                        {
+                            Id = 77,
+                            Name = "StudyEnvironment",
+                            Value = "Collaborative"
+                        },
+                        new
+                        {
+                            Id = 78,
+                            Name = "StudyEnvironment",
+                            Value = "No Preference"
+                        },
+                        new
+                        {
+                            Id = 79,
+                            Name = "PrefferedCommunicationMeans",
+                            Value = "Text"
+                        },
+                        new
+                        {
+                            Id = 80,
+                            Name = "PrefferedCommunicationMeans",
+                            Value = "Calls"
+                        },
+                        new
+                        {
+                            Id = 81,
+                            Name = "PrefferedCommunicationMeans",
+                            Value = "Face-to-face"
+                        },
+                        new
+                        {
+                            Id = 82,
+                            Name = "PersonalityType",
+                            Value = "Intorvert"
+                        },
+                        new
+                        {
+                            Id = 83,
+                            Name = "PersonalityType",
+                            Value = "Extrovert"
+                        },
+                        new
+                        {
+                            Id = 84,
+                            Name = "ConflictResolutionStyle",
+                            Value = "Direct"
+                        },
+                        new
+                        {
+                            Id = 85,
+                            Name = "ConflictResolutionStyle",
+                            Value = "Passive"
+                        },
+                        new
+                        {
+                            Id = 86,
+                            Name = "ConflictResolutionStyle",
+                            Value = "Mediator"
+                        });
+                });
+
             modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.RentStatus", b =>
                 {
                     b.Property<int>("Id")
@@ -1727,1114 +2707,6 @@ namespace Rent4Students.Infrastructure.Migrations
                         {
                             Id = 2,
                             Name = "Inactive"
-                        });
-                });
-
-            modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.UserFeature", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserFeature");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Gender",
-                            Value = "Male"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Gender",
-                            Value = "Female"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Gender",
-                            Value = "Other"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Occupation",
-                            Value = "Part-Time Job"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Occupation",
-                            Value = "Full-Time Job"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Occupation",
-                            Value = "Student"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "YearOfStudy",
-                            Value = "1"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "YearOfStudy",
-                            Value = "2"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "YearOfStudy",
-                            Value = "3"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "YearOfStudy",
-                            Value = "4"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "YearOfStudy",
-                            Value = "5"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "YearOfStudy",
-                            Value = "6"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "ReligiousBeliefs",
-                            Value = "Orthodoxy"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "ReligiousBeliefs",
-                            Value = "Romano Catholicism"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Name = "ReligiousBeliefs",
-                            Value = "Greek Catholicism"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Name = "ReligiousBeliefs",
-                            Value = "Calvinist"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Name = "ReligiousBeliefs",
-                            Value = "Lutheran"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Name = "ReligiousBeliefs",
-                            Value = "Pentecostal Christian"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Name = "ReligiousBeliefs",
-                            Value = "Islam"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Name = "ReligiousBeliefs",
-                            Value = "Judaism"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Name = "ReligiousBeliefs",
-                            Value = "Baptist"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Name = "ReligiousBeliefs",
-                            Value = "Atheism/Agnosticism"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Name = "ReligiousBeliefs",
-                            Value = "Adventist"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Name = "ReligiousBeliefs",
-                            Value = "Jehovah’s Witnesses"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Name = "ReligiousBeliefs",
-                            Value = "Buddhism"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Name = "ReligiousBeliefs",
-                            Value = "Hindu"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            Name = "ReligiousBeliefs",
-                            Value = "Other"
-                        },
-                        new
-                        {
-                            Id = 28,
-                            Name = "DietaryPreferences",
-                            Value = "No Preferences"
-                        },
-                        new
-                        {
-                            Id = 29,
-                            Name = "DietaryPreferences",
-                            Value = "Vegetarian"
-                        },
-                        new
-                        {
-                            Id = 30,
-                            Name = "DietaryPreferences",
-                            Value = "Vegan"
-                        },
-                        new
-                        {
-                            Id = 31,
-                            Name = "DietaryPreferences",
-                            Value = "Pescatarian"
-                        },
-                        new
-                        {
-                            Id = 32,
-                            Name = "DietaryPreferences",
-                            Value = "Gluten-Free"
-                        },
-                        new
-                        {
-                            Id = 33,
-                            Name = "DietaryPreferences",
-                            Value = "Lactose-Free"
-                        },
-                        new
-                        {
-                            Id = 34,
-                            Name = "DietaryPreferences",
-                            Value = "Keto"
-                        },
-                        new
-                        {
-                            Id = 35,
-                            Name = "DietaryPreferences",
-                            Value = "Diabetic-Friendly"
-                        },
-                        new
-                        {
-                            Id = 36,
-                            Name = "DietaryPreferences",
-                            Value = "Halal"
-                        },
-                        new
-                        {
-                            Id = 37,
-                            Name = "DietaryPreferences",
-                            Value = "Kosher"
-                        },
-                        new
-                        {
-                            Id = 38,
-                            Name = "DietaryPreferences",
-                            Value = "Organic"
-                        },
-                        new
-                        {
-                            Id = 39,
-                            Name = "DietaryPreferences",
-                            Value = "Other"
-                        },
-                        new
-                        {
-                            Id = 40,
-                            Name = "Allergies",
-                            Value = "No Allergies"
-                        },
-                        new
-                        {
-                            Id = 41,
-                            Name = "Allergies",
-                            Value = "Peanuts/Nuts"
-                        },
-                        new
-                        {
-                            Id = 42,
-                            Name = "Allergies",
-                            Value = "Dairy"
-                        },
-                        new
-                        {
-                            Id = 43,
-                            Name = "Allergies",
-                            Value = "Eggs"
-                        },
-                        new
-                        {
-                            Id = 44,
-                            Name = "Allergies",
-                            Value = "Wheat"
-                        },
-                        new
-                        {
-                            Id = 45,
-                            Name = "Allergies",
-                            Value = "Soy"
-                        },
-                        new
-                        {
-                            Id = 46,
-                            Name = "Allergies",
-                            Value = "Fish"
-                        },
-                        new
-                        {
-                            Id = 47,
-                            Name = "Allergies",
-                            Value = "Pollen"
-                        },
-                        new
-                        {
-                            Id = 48,
-                            Name = "Allergies",
-                            Value = "Dust Mites"
-                        },
-                        new
-                        {
-                            Id = 49,
-                            Name = "Allergies",
-                            Value = "Mold"
-                        },
-                        new
-                        {
-                            Id = 50,
-                            Name = "Allergies",
-                            Value = "Cats"
-                        },
-                        new
-                        {
-                            Id = 51,
-                            Name = "Allergies",
-                            Value = "Dogs"
-                        },
-                        new
-                        {
-                            Id = 52,
-                            Name = "Allergies",
-                            Value = "Latex"
-                        },
-                        new
-                        {
-                            Id = 53,
-                            Name = "Allergies",
-                            Value = "Fragrances"
-                        },
-                        new
-                        {
-                            Id = 54,
-                            Name = "Allergies",
-                            Value = "Cosmetic Products"
-                        },
-                        new
-                        {
-                            Id = 55,
-                            Name = "Allergies",
-                            Value = "Detergents and Soaps"
-                        },
-                        new
-                        {
-                            Id = 56,
-                            Name = "Allergies",
-                            Value = "Bee Stings"
-                        },
-                        new
-                        {
-                            Id = 57,
-                            Name = "Allergies",
-                            Value = "Wasp Stings"
-                        },
-                        new
-                        {
-                            Id = 58,
-                            Name = "Allergies",
-                            Value = "Ant Stings"
-                        },
-                        new
-                        {
-                            Id = 59,
-                            Name = "Allergies",
-                            Value = "Medications"
-                        },
-                        new
-                        {
-                            Id = 60,
-                            Name = "Allergies",
-                            Value = "Other"
-                        },
-                        new
-                        {
-                            Id = 61,
-                            Name = "SleepingHours",
-                            Value = "Early Bird"
-                        },
-                        new
-                        {
-                            Id = 62,
-                            Name = "SleepingHours",
-                            Value = "Night Owl"
-                        },
-                        new
-                        {
-                            Id = 63,
-                            Name = "SleepingHours",
-                            Value = "Flexible"
-                        },
-                        new
-                        {
-                            Id = 64,
-                            Name = "SleepingHours",
-                            Value = "Other"
-                        },
-                        new
-                        {
-                            Id = 65,
-                            Name = "SmokingHabbits",
-                            Value = "Smoker"
-                        },
-                        new
-                        {
-                            Id = 66,
-                            Name = "SmokingHabbits",
-                            Value = "Non-Smoker"
-                        },
-                        new
-                        {
-                            Id = 67,
-                            Name = "SmokingHabbits",
-                            Value = "Doesn't Mind"
-                        },
-                        new
-                        {
-                            Id = 68,
-                            Name = "AlcoholConsumption",
-                            Value = "Regular"
-                        },
-                        new
-                        {
-                            Id = 69,
-                            Name = "AlcoholConsumption",
-                            Value = "Social"
-                        },
-                        new
-                        {
-                            Id = 70,
-                            Name = "AlcoholConsumption",
-                            Value = "Rarely"
-                        },
-                        new
-                        {
-                            Id = 71,
-                            Name = "AlcoholConsumption",
-                            Value = "Never"
-                        },
-                        new
-                        {
-                            Id = 72,
-                            Name = "PetOwnership",
-                            Value = "No"
-                        },
-                        new
-                        {
-                            Id = 73,
-                            Name = "PetOwnership",
-                            Value = "Cat"
-                        },
-                        new
-                        {
-                            Id = 74,
-                            Name = "PetOwnership",
-                            Value = "Dog"
-                        },
-                        new
-                        {
-                            Id = 75,
-                            Name = "PetOwnership",
-                            Value = "Bird"
-                        },
-                        new
-                        {
-                            Id = 76,
-                            Name = "PetOwnership",
-                            Value = "Fish"
-                        },
-                        new
-                        {
-                            Id = 77,
-                            Name = "PetOwnership",
-                            Value = "Rodent"
-                        },
-                        new
-                        {
-                            Id = 78,
-                            Name = "PetOwnership",
-                            Value = "Other"
-                        },
-                        new
-                        {
-                            Id = 79,
-                            Name = "PetPreferences",
-                            Value = "Likes Pets"
-                        },
-                        new
-                        {
-                            Id = 80,
-                            Name = "PetPreferences",
-                            Value = "Doesn't Likes Pets"
-                        },
-                        new
-                        {
-                            Id = 81,
-                            Name = "PetPreferences",
-                            Value = "Allergic"
-                        },
-                        new
-                        {
-                            Id = 82,
-                            Name = "PetPreferences",
-                            Value = "No Preference"
-                        },
-                        new
-                        {
-                            Id = 83,
-                            Name = "NoiseTolerance",
-                            Value = "Quiet"
-                        },
-                        new
-                        {
-                            Id = 84,
-                            Name = "NoiseTolerance",
-                            Value = "Moderate"
-                        },
-                        new
-                        {
-                            Id = 85,
-                            Name = "NoiseTolerance",
-                            Value = "Doesn't Mind"
-                        },
-                        new
-                        {
-                            Id = 86,
-                            Name = "CleanlinessLevel",
-                            Value = "Very Clean"
-                        },
-                        new
-                        {
-                            Id = 87,
-                            Name = "CleanlinessLevel",
-                            Value = "Moderate"
-                        },
-                        new
-                        {
-                            Id = 88,
-                            Name = "CleanlinessLevel",
-                            Value = "Laid-Back"
-                        },
-                        new
-                        {
-                            Id = 89,
-                            Name = "CookingHabbits",
-                            Value = "Loves Cooking"
-                        },
-                        new
-                        {
-                            Id = 90,
-                            Name = "CookingHabbits",
-                            Value = "Cooks Occasionally"
-                        },
-                        new
-                        {
-                            Id = 91,
-                            Name = "CookingHabbits",
-                            Value = "Doesn't Cook"
-                        },
-                        new
-                        {
-                            Id = 92,
-                            Name = "PreferedLivingArrangement",
-                            Value = "Private Room"
-                        },
-                        new
-                        {
-                            Id = 93,
-                            Name = "PreferedLivingArrangement",
-                            Value = "Shared Room"
-                        },
-                        new
-                        {
-                            Id = 94,
-                            Name = "PreferedLivingArrangement",
-                            Value = "Doesn't Mind"
-                        },
-                        new
-                        {
-                            Id = 95,
-                            Name = "Hobbies",
-                            Value = "Drawing"
-                        },
-                        new
-                        {
-                            Id = 96,
-                            Name = "Hobbies",
-                            Value = "Painting"
-                        },
-                        new
-                        {
-                            Id = 97,
-                            Name = "Hobbies",
-                            Value = "Singing"
-                        },
-                        new
-                        {
-                            Id = 98,
-                            Name = "Hobbies",
-                            Value = "Calligraphy"
-                        },
-                        new
-                        {
-                            Id = 99,
-                            Name = "Hobbies",
-                            Value = "Photography"
-                        },
-                        new
-                        {
-                            Id = 100,
-                            Name = "Hobbies",
-                            Value = "Graphic Design"
-                        },
-                        new
-                        {
-                            Id = 101,
-                            Name = "Hobbies",
-                            Value = "Playing an Instrument"
-                        },
-                        new
-                        {
-                            Id = 102,
-                            Name = "Hobbies",
-                            Value = "Knitting/Crocheting"
-                        },
-                        new
-                        {
-                            Id = 103,
-                            Name = "Hobbies",
-                            Value = "Sewing/Fashion Design"
-                        },
-                        new
-                        {
-                            Id = 104,
-                            Name = "Hobbies",
-                            Value = "Dancing"
-                        },
-                        new
-                        {
-                            Id = 105,
-                            Name = "Hobbies",
-                            Value = "Stand-up Comedy"
-                        },
-                        new
-                        {
-                            Id = 106,
-                            Name = "Hobbies",
-                            Value = "Magic Tricks"
-                        },
-                        new
-                        {
-                            Id = 107,
-                            Name = "Hobbies",
-                            Value = "Writing"
-                        },
-                        new
-                        {
-                            Id = 108,
-                            Name = "Hobbies",
-                            Value = "Reading"
-                        },
-                        new
-                        {
-                            Id = 109,
-                            Name = "Hobbies",
-                            Value = "Blogging"
-                        },
-                        new
-                        {
-                            Id = 110,
-                            Name = "Hobbies",
-                            Value = "Running/Jogging"
-                        },
-                        new
-                        {
-                            Id = 111,
-                            Name = "Hobbies",
-                            Value = "Yoga"
-                        },
-                        new
-                        {
-                            Id = 112,
-                            Name = "Hobbies",
-                            Value = "Pilates"
-                        },
-                        new
-                        {
-                            Id = 113,
-                            Name = "Hobbies",
-                            Value = "Swimming"
-                        },
-                        new
-                        {
-                            Id = 114,
-                            Name = "Hobbies",
-                            Value = "Hiking"
-                        },
-                        new
-                        {
-                            Id = 115,
-                            Name = "Hobbies",
-                            Value = "Cycling"
-                        },
-                        new
-                        {
-                            Id = 116,
-                            Name = "Hobbies",
-                            Value = "Martial Arts"
-                        },
-                        new
-                        {
-                            Id = 117,
-                            Name = "Hobbies",
-                            Value = "Football"
-                        },
-                        new
-                        {
-                            Id = 118,
-                            Name = "Hobbies",
-                            Value = "Basketball"
-                        },
-                        new
-                        {
-                            Id = 119,
-                            Name = "Hobbies",
-                            Value = "Volleyball"
-                        },
-                        new
-                        {
-                            Id = 120,
-                            Name = "Hobbies",
-                            Value = "Handball"
-                        },
-                        new
-                        {
-                            Id = 121,
-                            Name = "Hobbies",
-                            Value = "Rock Climbing"
-                        },
-                        new
-                        {
-                            Id = 122,
-                            Name = "Hobbies",
-                            Value = "Gymnastics"
-                        },
-                        new
-                        {
-                            Id = 123,
-                            Name = "Hobbies",
-                            Value = "Gaming"
-                        },
-                        new
-                        {
-                            Id = 124,
-                            Name = "Hobbies",
-                            Value = "Programming/Coding"
-                        },
-                        new
-                        {
-                            Id = 125,
-                            Name = "Hobbies",
-                            Value = "Robotics"
-                        },
-                        new
-                        {
-                            Id = 126,
-                            Name = "Hobbies",
-                            Value = "VR"
-                        },
-                        new
-                        {
-                            Id = 127,
-                            Name = "Hobbies",
-                            Value = "3D Printing"
-                        },
-                        new
-                        {
-                            Id = 128,
-                            Name = "Hobbies",
-                            Value = "Drone Flying"
-                        },
-                        new
-                        {
-                            Id = 129,
-                            Name = "Hobbies",
-                            Value = "Cooking"
-                        },
-                        new
-                        {
-                            Id = 130,
-                            Name = "Hobbies",
-                            Value = "Baking"
-                        },
-                        new
-                        {
-                            Id = 131,
-                            Name = "Hobbies",
-                            Value = "Coffee Brewing"
-                        },
-                        new
-                        {
-                            Id = 132,
-                            Name = "Hobbies",
-                            Value = "Cake Decorating"
-                        },
-                        new
-                        {
-                            Id = 133,
-                            Name = "Hobbies",
-                            Value = "Gardening"
-                        },
-                        new
-                        {
-                            Id = 134,
-                            Name = "Hobbies",
-                            Value = "Bird Watching"
-                        },
-                        new
-                        {
-                            Id = 135,
-                            Name = "Hobbies",
-                            Value = "Camping"
-                        },
-                        new
-                        {
-                            Id = 136,
-                            Name = "Hobbies",
-                            Value = "Fishing"
-                        },
-                        new
-                        {
-                            Id = 137,
-                            Name = "Hobbies",
-                            Value = "Geocaching"
-                        },
-                        new
-                        {
-                            Id = 138,
-                            Name = "Hobbies",
-                            Value = "Stargazingg"
-                        },
-                        new
-                        {
-                            Id = 139,
-                            Name = "Hobbies",
-                            Value = "Collecting Stamps"
-                        },
-                        new
-                        {
-                            Id = 140,
-                            Name = "Hobbies",
-                            Value = "Coin Collecting"
-                        },
-                        new
-                        {
-                            Id = 141,
-                            Name = "Hobbies",
-                            Value = "Collecting Action Figures"
-                        },
-                        new
-                        {
-                            Id = 142,
-                            Name = "Hobbies",
-                            Value = "Vinyl Records Collecting"
-                        },
-                        new
-                        {
-                            Id = 143,
-                            Name = "Hobbies",
-                            Value = "Fossil or Rock Collecting"
-                        },
-                        new
-                        {
-                            Id = 144,
-                            Name = "Hobbies",
-                            Value = "Model Building"
-                        },
-                        new
-                        {
-                            Id = 145,
-                            Name = "Hobbies",
-                            Value = "Origami"
-                        },
-                        new
-                        {
-                            Id = 146,
-                            Name = "Hobbies",
-                            Value = "Beadwork"
-                        },
-                        new
-                        {
-                            Id = 147,
-                            Name = "Hobbies",
-                            Value = "Puzzles"
-                        },
-                        new
-                        {
-                            Id = 148,
-                            Name = "Hobbies",
-                            Value = "Chess"
-                        },
-                        new
-                        {
-                            Id = 149,
-                            Name = "Hobbies",
-                            Value = "Sudoku"
-                        },
-                        new
-                        {
-                            Id = 150,
-                            Name = "Hobbies",
-                            Value = "Traveling"
-                        },
-                        new
-                        {
-                            Id = 151,
-                            Name = "Hobbies",
-                            Value = "Road Tripping"
-                        },
-                        new
-                        {
-                            Id = 152,
-                            Name = "Hobbies",
-                            Value = "Backpacking"
-                        },
-                        new
-                        {
-                            Id = 153,
-                            Name = "Hobbies",
-                            Value = "Movie Watching"
-                        },
-                        new
-                        {
-                            Id = 154,
-                            Name = "Hobbies",
-                            Value = "Podcasting"
-                        },
-                        new
-                        {
-                            Id = 155,
-                            Name = "Hobbies",
-                            Value = "Streaming/Content Creation"
-                        },
-                        new
-                        {
-                            Id = 156,
-                            Name = "Hobbies",
-                            Value = "Astrology"
-                        },
-                        new
-                        {
-                            Id = 157,
-                            Name = "Hobbies",
-                            Value = "Cosplaying"
-                        },
-                        new
-                        {
-                            Id = 158,
-                            Name = "Hobbies",
-                            Value = "Parkour"
-                        },
-                        new
-                        {
-                            Id = 159,
-                            Name = "Hobbies",
-                            Value = "Other"
-                        },
-                        new
-                        {
-                            Id = 160,
-                            Name = "ExerciseRoutine",
-                            Value = "Gym Regular"
-                        },
-                        new
-                        {
-                            Id = 161,
-                            Name = "ExerciseRoutine",
-                            Value = "Outdoor Activities"
-                        },
-                        new
-                        {
-                            Id = 162,
-                            Name = "ExerciseRoutine",
-                            Value = "Doesn't Exercise Regularly"
-                        },
-                        new
-                        {
-                            Id = 163,
-                            Name = "SocialHabbits",
-                            Value = "Outgoing"
-                        },
-                        new
-                        {
-                            Id = 164,
-                            Name = "SocialHabbits",
-                            Value = "Introverted"
-                        },
-                        new
-                        {
-                            Id = 165,
-                            Name = "SocialHabbits",
-                            Value = "Balanced"
-                        },
-                        new
-                        {
-                            Id = 166,
-                            Name = "PrefferedRoommateGender",
-                            Value = "Same Gender"
-                        },
-                        new
-                        {
-                            Id = 167,
-                            Name = "PrefferedRoommateGender",
-                            Value = "No Preference"
-                        },
-                        new
-                        {
-                            Id = 168,
-                            Name = "GuestsTolerance",
-                            Value = "Frequent Visitors"
-                        },
-                        new
-                        {
-                            Id = 169,
-                            Name = "GuestsTolerance",
-                            Value = "Rarely"
-                        },
-                        new
-                        {
-                            Id = 170,
-                            Name = "GuestsTolerance",
-                            Value = "No Visitors"
-                        },
-                        new
-                        {
-                            Id = 171,
-                            Name = "StudyEnvironment",
-                            Value = "Quiet"
-                        },
-                        new
-                        {
-                            Id = 172,
-                            Name = "StudyEnvironment",
-                            Value = "Collaborative"
-                        },
-                        new
-                        {
-                            Id = 173,
-                            Name = "StudyEnvironment",
-                            Value = "No Preference"
-                        },
-                        new
-                        {
-                            Id = 174,
-                            Name = "PrefferedCommunicationMeans",
-                            Value = "Text"
-                        },
-                        new
-                        {
-                            Id = 175,
-                            Name = "PrefferedCommunicationMeans",
-                            Value = "Calls"
-                        },
-                        new
-                        {
-                            Id = 176,
-                            Name = "PrefferedCommunicationMeans",
-                            Value = "Face-to-face"
-                        },
-                        new
-                        {
-                            Id = 177,
-                            Name = "PersonalityType",
-                            Value = "Intorvert"
-                        },
-                        new
-                        {
-                            Id = 178,
-                            Name = "PersonalityType",
-                            Value = "Extrovert"
-                        },
-                        new
-                        {
-                            Id = 179,
-                            Name = "ConflictResolutionStyle",
-                            Value = "Direct"
-                        },
-                        new
-                        {
-                            Id = 180,
-                            Name = "ConflictResolutionStyle",
-                            Value = "Passive"
-                        },
-                        new
-                        {
-                            Id = 181,
-                            Name = "ConflictResolutionStyle",
-                            Value = "Mediator"
                         });
                 });
 
@@ -2868,7 +2740,7 @@ namespace Rent4Students.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProfilePictureId")
+                    b.Property<Guid?>("ProfilePhotoId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UniversityId")
@@ -2882,6 +2754,53 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.HasIndex("UniversityId");
 
                     b.ToTable("Faculty");
+                });
+
+            modelBuilder.Entity("Rent4Students.Domain.Entities.FinancialHelpDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DocumentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DocumentStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DocumentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("FacultyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StorageURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentStatusId");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("FacultyId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("FinancialHelpDocument");
                 });
 
             modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.LivingAmenity", b =>
@@ -2939,19 +2858,49 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.ToTable("RentHistory");
                 });
 
-            modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.StudentAttribute", b =>
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.StudentAllergies", b =>
                 {
-                    b.Property<int>("UserFeatureId")
+                    b.Property<int>("AllergyId")
                         .HasColumnType("int");
 
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("UserFeatureId", "StudentId");
+                    b.HasKey("AllergyId", "StudentId");
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("StudentAttribute");
+                    b.ToTable("StudentAllergies");
+                });
+
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.StudentAttributes", b =>
+                {
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AttributeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentId", "AttributeId");
+
+                    b.HasIndex("AttributeId");
+
+                    b.ToTable("StudentAttributes");
+                });
+
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.StudentHobbies", b =>
+                {
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("HobbyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentId", "HobbyId");
+
+                    b.HasIndex("HobbyId");
+
+                    b.ToTable("StudentHobbies");
                 });
 
             modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.StudentRoommate", b =>
@@ -3076,6 +3025,62 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("Rent4Students.Domain.Entities.RentDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AdditionalDetails")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("DepositAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("DocumentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DocumentStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DocumentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("MonthlyRent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("RentPaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StorageURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentStatusId");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.ToTable("RentDocuments");
+                });
+
             modelBuilder.Entity("Rent4Students.Domain.Entities.StoredPhoto", b =>
                 {
                     b.Property<Guid>("Id")
@@ -3163,6 +3168,9 @@ namespace Rent4Students.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GenderId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -3176,7 +3184,7 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProfilePictureId")
+                    b.Property<Guid?>("ProfilePhotoId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("StudentIdNumber")
@@ -3186,15 +3194,20 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("YearOfStudy")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FacultyId");
 
+                    b.HasIndex("GenderId");
+
                     b.HasIndex("NationalityId");
 
-                    b.HasIndex("ProfilePictureId")
+                    b.HasIndex("ProfilePhotoId")
                         .IsUnique()
-                        .HasFilter("[ProfilePictureId] IS NOT NULL");
+                        .HasFilter("[ProfilePhotoId] IS NOT NULL");
 
                     b.ToTable("Student");
                 });
@@ -3240,7 +3253,7 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProfilePictureId")
+                    b.Property<Guid?>("ProfilePhotoId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -3248,54 +3261,11 @@ namespace Rent4Students.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfilePictureId")
+                    b.HasIndex("ProfilePhotoId")
                         .IsUnique()
-                        .HasFilter("[ProfilePictureId] IS NOT NULL");
+                        .HasFilter("[ProfilePhotoId] IS NOT NULL");
 
                     b.ToTable("University");
-                });
-
-            modelBuilder.Entity("Rent4Students.Domain.Entities.FinancialHelpDocument", b =>
-                {
-                    b.HasBaseType("Rent4Students.Domain.Entities.DocumentStorage");
-
-                    b.Property<Guid?>("FacultyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StudentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("FacultyId");
-
-                    b.HasIndex("StudentId");
-
-                    b.HasDiscriminator().HasValue("FinancialHelpDocument");
-                });
-
-            modelBuilder.Entity("Rent4Students.Domain.Entities.RentDocument", b =>
-                {
-                    b.HasBaseType("Rent4Students.Domain.Entities.DocumentStorage");
-
-                    b.Property<string>("AdditionalDetails")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("DepositAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("MonthlyRent")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("RentPaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasDiscriminator().HasValue("RentDocument");
                 });
 
             modelBuilder.Entity("Rent4Students.Domain.Entities.Agency", b =>
@@ -3347,25 +3317,6 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.Navigation("University");
                 });
 
-            modelBuilder.Entity("Rent4Students.Domain.Entities.DocumentStorage", b =>
-                {
-                    b.HasOne("Rent4Students.Domain.Entities.Enums.DocumentStatus", "DocumentStatus")
-                        .WithMany("Documents")
-                        .HasForeignKey("DocumentStatusId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Rent4Students.Domain.Entities.Enums.DocumentType", "DocumentType")
-                        .WithMany("Documents")
-                        .HasForeignKey("DocumentTypeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("DocumentStatus");
-
-                    b.Navigation("DocumentType");
-                });
-
             modelBuilder.Entity("Rent4Students.Domain.Entities.Faculty", b =>
                 {
                     b.HasOne("Rent4Students.Domain.Entities.University", "ParentUniversity")
@@ -3375,6 +3326,39 @@ namespace Rent4Students.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ParentUniversity");
+                });
+
+            modelBuilder.Entity("Rent4Students.Domain.Entities.FinancialHelpDocument", b =>
+                {
+                    b.HasOne("Rent4Students.Domain.Entities.Enums.DocumentStatus", "DocumentStatus")
+                        .WithMany("FinancialHelpDocuments")
+                        .HasForeignKey("DocumentStatusId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rent4Students.Domain.Entities.Enums.DocumentType", "DocumentType")
+                        .WithMany("FinancialHelpDocuments")
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rent4Students.Domain.Entities.Faculty", "Faculty")
+                        .WithMany("FinancialHelpDocuments")
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Rent4Students.Domain.Entities.Student", "Student")
+                        .WithMany("FinancialHelpDocuments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("DocumentStatus");
+
+                    b.Navigation("DocumentType");
+
+                    b.Navigation("Faculty");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.LivingAmenity", b =>
@@ -3448,22 +3432,58 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.StudentAttribute", b =>
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.StudentAllergies", b =>
                 {
+                    b.HasOne("Rent4Students.Domain.Entities.Enums.Allergy", "Allergy")
+                        .WithMany("Allergies")
+                        .HasForeignKey("AllergyId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rent4Students.Domain.Entities.Student", "Student")
+                        .WithMany("Allergies")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Allergy");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.StudentAttributes", b =>
+                {
+                    b.HasOne("Rent4Students.Domain.Entities.Enums.PersonalityAttribute", "Attribute")
+                        .WithMany("Attributes")
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Rent4Students.Domain.Entities.Student", "Student")
                         .WithMany("Attributes")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Rent4Students.Domain.Entities.Enums.UserFeature", "UserFeature")
-                        .WithMany()
-                        .HasForeignKey("UserFeatureId")
+                    b.Navigation("Attribute");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.StudentHobbies", b =>
+                {
+                    b.HasOne("Rent4Students.Domain.Entities.Enums.Hobby", "Hobby")
+                        .WithMany("StudentHobbies")
+                        .HasForeignKey("HobbyId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Student");
+                    b.HasOne("Rent4Students.Domain.Entities.Student", "Student")
+                        .WithMany("Hobbies")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.Navigation("UserFeature");
+                    b.Navigation("Hobby");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Rent4Students.Domain.Entities.Joined.StudentRoommate", b =>
@@ -3502,6 +3522,25 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("Rent4Students.Domain.Entities.RentDocument", b =>
+                {
+                    b.HasOne("Rent4Students.Domain.Entities.Enums.DocumentStatus", "DocumentStatus")
+                        .WithMany("RentDocuments")
+                        .HasForeignKey("DocumentStatusId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rent4Students.Domain.Entities.Enums.DocumentType", "DocumentType")
+                        .WithMany("RentDocuments")
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("DocumentStatus");
+
+                    b.Navigation("DocumentType");
+                });
+
             modelBuilder.Entity("Rent4Students.Domain.Entities.StoredPhoto", b =>
                 {
                     b.HasOne("Rent4Students.Domain.Entities.Faculty", "Faculty")
@@ -3533,6 +3572,12 @@ namespace Rent4Students.Infrastructure.Migrations
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.NoAction);
 
+                    b.HasOne("Rent4Students.Domain.Entities.Enums.Gender", "Gender")
+                        .WithMany()
+                        .HasForeignKey("GenderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Rent4Students.Domain.Entities.Enums.Nationality", "Nationality")
                         .WithMany()
                         .HasForeignKey("NationalityId")
@@ -3541,10 +3586,12 @@ namespace Rent4Students.Infrastructure.Migrations
 
                     b.HasOne("Rent4Students.Domain.Entities.StoredPhoto", "ProfilePhoto")
                         .WithOne("Student")
-                        .HasForeignKey("Rent4Students.Domain.Entities.Student", "ProfilePictureId")
+                        .HasForeignKey("Rent4Students.Domain.Entities.Student", "ProfilePhotoId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("FacultyName");
+
+                    b.Navigation("Gender");
 
                     b.Navigation("Nationality");
 
@@ -3555,37 +3602,34 @@ namespace Rent4Students.Infrastructure.Migrations
                 {
                     b.HasOne("Rent4Students.Domain.Entities.StoredPhoto", "ProfilePhoto")
                         .WithOne("University")
-                        .HasForeignKey("Rent4Students.Domain.Entities.University", "ProfilePictureId")
+                        .HasForeignKey("Rent4Students.Domain.Entities.University", "ProfilePhotoId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("ProfilePhoto");
                 });
 
-            modelBuilder.Entity("Rent4Students.Domain.Entities.FinancialHelpDocument", b =>
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.Allergy", b =>
                 {
-                    b.HasOne("Rent4Students.Domain.Entities.Faculty", "Faculty")
-                        .WithMany("FinancialHelpDocuments")
-                        .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Rent4Students.Domain.Entities.Student", "Student")
-                        .WithMany("FinancialHelpDocuments")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Faculty");
-
-                    b.Navigation("Student");
+                    b.Navigation("Allergies");
                 });
 
             modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.DocumentStatus", b =>
                 {
-                    b.Navigation("Documents");
+                    b.Navigation("FinancialHelpDocuments");
+
+                    b.Navigation("RentDocuments");
                 });
 
             modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.DocumentType", b =>
                 {
-                    b.Navigation("Documents");
+                    b.Navigation("FinancialHelpDocuments");
+
+                    b.Navigation("RentDocuments");
+                });
+
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.Hobby", b =>
+                {
+                    b.Navigation("StudentHobbies");
                 });
 
             modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.ListingFeature", b =>
@@ -3598,6 +3642,11 @@ namespace Rent4Students.Infrastructure.Migrations
             modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.ListingType", b =>
                 {
                     b.Navigation("Listings");
+                });
+
+            modelBuilder.Entity("Rent4Students.Domain.Entities.Enums.PersonalityAttribute", b =>
+                {
+                    b.Navigation("Attributes");
                 });
 
             modelBuilder.Entity("Rent4Students.Domain.Entities.Faculty", b =>
@@ -3631,6 +3680,11 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.Navigation("ProfilePhoto");
                 });
 
+            modelBuilder.Entity("Rent4Students.Domain.Entities.RentDocument", b =>
+                {
+                    b.Navigation("RentHistories");
+                });
+
             modelBuilder.Entity("Rent4Students.Domain.Entities.StoredPhoto", b =>
                 {
                     b.Navigation("Student");
@@ -3642,9 +3696,13 @@ namespace Rent4Students.Infrastructure.Migrations
                 {
                     b.Navigation("Address");
 
+                    b.Navigation("Allergies");
+
                     b.Navigation("Attributes");
 
                     b.Navigation("FinancialHelpDocuments");
+
+                    b.Navigation("Hobbies");
 
                     b.Navigation("LivingPreferences");
 
@@ -3658,11 +3716,6 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("Faculties");
-                });
-
-            modelBuilder.Entity("Rent4Students.Domain.Entities.RentDocument", b =>
-                {
-                    b.Navigation("RentHistories");
                 });
 #pragma warning restore 612, 618
         }

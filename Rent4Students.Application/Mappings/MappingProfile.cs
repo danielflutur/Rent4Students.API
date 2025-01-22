@@ -1,8 +1,16 @@
 ﻿using AutoMapper;
 using Rent4Students.Application.DTOs.Address;
+using Rent4Students.Application.DTOs.Allergies;
+using Rent4Students.Application.DTOs.Attributes;
+using Rent4Students.Application.DTOs.Faculty;
+using Rent4Students.Application.DTOs.Gender;
+using Rent4Students.Application.DTOs.Hobbies;
 using Rent4Students.Application.DTOs.Listing;
 using Rent4Students.Application.DTOs.ListingFeature;
+using Rent4Students.Application.DTOs.Nationality;
 using Rent4Students.Application.DTOs.PropertyOwner;
+using Rent4Students.Application.DTOs.Student;
+using Rent4Students.Application.DTOs.University;
 using Rent4Students.Domain.Entities;
 using Rent4Students.Domain.Entities.Enums;
 
@@ -16,6 +24,14 @@ namespace Rent4Students.Application.Mappings
             ConfigureAddressMapping();
             ConfigurePropertyOwnerMapping();
             ConfigureListingFeatureMapping();
+            ConfigureGenderMapping();
+            ConfigureNationalityMapping();
+            ConfigureAllergiesMapping();
+            ConfigureAttributesMapping();
+            ConfigureFacultyMapping();
+            ConfigureUniversityMapping();
+            ConfigureHobbyMapping();
+            ConfigureStudentMapping();
         }
 
         private void ConfigureListingMapping()
@@ -45,7 +61,77 @@ namespace Rent4Students.Application.Mappings
         private void ConfigureListingFeatureMapping()
         {
             CreateMap<ListingFeatureDTO, ListingFeature>();
+            CreateMap<StudentListingPreferenceDTO, ListingFeature>();
             CreateMap<ListingFeature, ResponseListingFeatureDTO>();
+        }
+
+        private void ConfigureGenderMapping()
+        {
+            CreateMap<GenderDTO, Gender>();
+            CreateMap<Gender, ResponseGenderDTO>();
+        }
+
+        private void ConfigureNationalityMapping()
+        {
+            CreateMap<NationalityDTO, Nationality>();
+            CreateMap<Nationality, ResponseNationalityDTO>();
+        }
+
+        private void ConfigureAllergiesMapping()
+        {
+            CreateMap<AllergyDTO, Allergy>();
+            CreateMap<Allergy, ResponseAllergiesDTO>();
+        }
+
+        private void ConfigureAttributesMapping()
+        {
+            CreateMap<StudentAttributeDTO, PersonalityAttribute>();
+            CreateMap<PersonalityAttribute, ResponseStudentAttributesDTO>();
+        }
+
+        private void ConfigureFacultyMapping()
+        {
+            CreateMap<StudentFacultyDTO, Faculty>();
+            CreateMap<Faculty, ResponseStudentFacultyDTO>();
+            CreateMap<FacultyDTO, Faculty>();
+            CreateMap<Faculty, ResponseFacultyDTO>()
+                .ForMember(faculty => faculty.ProfilePhoto,
+                opt => opt.MapFrom(entity => entity.ProfilePhoto.PhotoURL));
+        }
+
+        private void ConfigureUniversityMapping()
+        {
+            CreateMap<UniversityDTO, University>();
+            CreateMap<University, ResponseStudentUniversityDTO>();
+            CreateMap<University, ResponseUniversityDTO>()
+                .ForMember(university => university.ProfilePhoto,
+                opt => opt.MapFrom(entity => entity.ProfilePhoto.PhotoURL));
+        }
+
+        private void ConfigureHobbyMapping()
+        {
+            CreateMap<HobbyDTO, Hobby>();
+            CreateMap<Hobby, ResponseHobbiesDTO>();
+        }
+
+        private void ConfigureStudentMapping()
+        {
+            CreateMap<StudentDTO, Student>();
+            CreateMap<UpdateStudentDTO, Student>();
+            CreateMap<Student, ResponseStudentDTO>()
+                .ForMember(student => student.ProfilePhoto,
+                    opt => opt.MapFrom(entity => entity.ProfilePhoto.PhotoURL))
+                .ForMember(student => student.HobbiesIds,
+                    opt => opt.MapFrom(entity => entity.Hobbies
+                        .Select(hobby => new ResponseHobbiesDTO { Id = hobby.HobbyId, Name = hobby.Hobby.Name })))
+                .ForMember(student => student.AllergiesIds,
+                    opt => opt.MapFrom(entity => entity.Allergies
+                        .Select(allergy => new ResponseAllergiesDTO { Id = allergy.AllergyId, Name = allergy.Allergy.Name })))
+                .ForMember(student => student.AttributesIds,
+                    opt => opt.MapFrom(entity => entity.Attributes
+                        .Select(attribute => new ResponseStudentAttributesDTO { Value = attribute.Attribute.Value, Name = attribute.Attribute.Name})))
+                .ForMember(student => student.Faculty,
+                    opt => opt.MapFrom(entity => new ResponseStudentFacultyDTO { Name = entity.FacultyName.Name, University = new ResponseStudentUniversityDTO { Name = entity.FacultyName.ParentUniversity.Name } }));
         }
     }
 }

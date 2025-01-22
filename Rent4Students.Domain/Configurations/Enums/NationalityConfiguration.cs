@@ -6,9 +6,5 @@ namespace Rent4Students.Domain.Configurations.Enums
 {
     public class NationalityConfiguration : BaseEnumEntityConfiguration<Nationality>
     {
-        public override void Configure(EntityTypeBuilder<Nationality> builder)
-        {
-            base.Configure(builder);
-        }
     }
 }

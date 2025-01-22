@@ -11,7 +11,6 @@ namespace Rent4Students.API.ServiceExtensions
         {
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IAgencyRepository, AgencyRepository>();
-            services.AddScoped<IDocumentStorageRepository, DocumentStorageRepository>();
             services.AddScoped<IFacultyRepository, FacultyRepository>();
             services.AddScoped<IFinancialHelpDocumentRepository, FinancialHelpDocumentRepository>();
             services.AddScoped<IListingRepository, ListingRepository>();
@@ -20,13 +19,16 @@ namespace Rent4Students.API.ServiceExtensions
             services.AddScoped<IStoredPhotoRepository, StoredPhotoRepository>();
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IUniversityRepository, UniversityRepository>();
+            services.AddScoped<IAllergyRepository, AllergyRepository>();
             services.AddScoped<IDocumentStatusRepository, DocumentStatusRepository>();
             services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
+            services.AddScoped<IGenderRepository, GenderRepository>();
+            services.AddScoped<IHobbyRepository, HobbyRepository>();
             services.AddScoped<IListingFeatureRepository, ListingFeatureRepository>();
             services.AddScoped<IListingTypeRepository, ListingTypeRepository>();
             services.AddScoped<INationalityRepository, NationalityRepository>();
+            services.AddScoped<IPersonalityAttributeRepository, PersonalityAttributeRepository>();
             services.AddScoped<IRentStatusRepository, RentStatusRepository>();
-            services.AddScoped<IUserFeatureRepository, UserFeatureRepository>();
 
             return services;
         }

@@ -4,14 +4,10 @@ namespace Rent4Students.Domain.Entities
 {
     public record Address : BaseEntity
     {
-        public string StreetAddress { get; set; }
-        public string? AppartmentNumber { get; set; }
-        public string? FloorNumber { get; set; }
-        public string? BuildingNumber { get; set; }
+        public string AddressDetails { get; set; }
+        public string? GoogleMaps {  get; set; }
         public string City { get; set; }
         public string County { get; set; }
-        public string Country { get; set; }
-        public string PostalCode { get; set; }
         public Guid? StudentId { get; set; }
         public Student? Student { get; set; }
         public Guid? UniversityId { get; set; }

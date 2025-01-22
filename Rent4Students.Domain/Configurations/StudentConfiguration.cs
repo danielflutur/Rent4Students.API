@@ -32,6 +32,15 @@ namespace Rent4Students.Domain.Configurations
             builder.Property(student => student.Age)
                 .IsRequired();
 
+            builder.Property(student => student.YearOfStudy)
+                .IsRequired(false);
+
+            builder.HasOne(student => student.Gender)
+                .WithMany()
+                .HasForeignKey(student => student.GenderId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired();
+
             builder.HasOne(student => student.Nationality)
                 .WithMany()
                 .HasForeignKey(student => student.NationalityId)
@@ -72,6 +81,18 @@ namespace Rent4Students.Domain.Configurations
                 .WithOne(roommate => roommate.Student)
                 .HasForeignKey(roommate => roommate.StudentId)
                 .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
+
+            builder.HasMany(student => student.Hobbies)
+                .WithOne(hobbies => hobbies.Student)
+                .HasForeignKey(hobbies => hobbies.StudentId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired(false);
+
+            builder.HasMany(student => student.Allergies)
+                .WithOne(allergies => allergies.Student)
+                .HasForeignKey(allergies => allergies.StudentId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired(false);
 
             builder.HasMany(student => student.Attributes)

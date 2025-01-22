@@ -45,7 +45,8 @@ namespace Rent4Students.Domain.Configurations
             builder.HasMany(university => university.Faculties)
                 .WithOne(faculty => faculty.ParentUniversity)
                 .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired();
+                .IsRequired(false)
+                ;
         }
     }
 }

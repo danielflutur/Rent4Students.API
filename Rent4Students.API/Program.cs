@@ -1,4 +1,5 @@
 using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi.Models;
 using Rent4Students.API.ServiceExtensions;
 using Rent4Students.Application.Mappings;
 using Swashbuckle.AspNetCore.SwaggerUI;
