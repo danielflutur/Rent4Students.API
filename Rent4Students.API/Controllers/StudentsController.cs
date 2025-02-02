@@ -24,9 +24,18 @@ namespace Rent4Students.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ResponseStudentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create(IFormFile profilePhoto, [FromForm] StudentDTO studentDTO)
+        public async Task<IActionResult> Create(StudentDTO studentDTO)
         {
-            return Ok(await _studentService.Create(studentDTO, profilePhoto));
+            return Ok(await _studentService.Create(studentDTO));
+        }
+
+        [HttpPost]
+        [Route("addPhoto")]
+        [ProducesResponseType(typeof(ResponseStudentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddProfilePhoto(IFormFile profilePhoto, Guid id)
+        {
+            return Ok(await _studentService.AddProfilePhoto(profilePhoto, id));
         }
 
         [HttpGet]
@@ -59,6 +68,14 @@ namespace Rent4Students.API.Controllers
         public async Task<IActionResult> Update(Guid id, UpdateStudentDTO studentDTO)
         {
             return Ok(await _studentService.Update(id, studentDTO));
+        }
+
+        [HttpPut("update-details/{id}")]
+        [ProducesResponseType(typeof(ResponseStudentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateStudentDetails(Guid id, StudentDetailsDTO studentDTO)
+        {
+            return Ok(await _studentService.UpdateStudentDetails(id, studentDTO));
         }
 
         [HttpDelete("{id}")]

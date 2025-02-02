@@ -5,5 +5,6 @@ namespace Rent4Students.Infrastructure.Repositories.Interfaces
 {
     public interface IPropertyOwnerRepository : IBaseRepository<PropertyOwner>
     {
+        Task<PropertyOwner> GetByEmail(string email);
     }
 }

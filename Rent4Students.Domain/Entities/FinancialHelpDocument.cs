@@ -7,6 +7,7 @@ namespace Rent4Students.Domain.Entities
     {
         public string? StorageURL { get; set; }
         public string DocumentName { get; set; }
+        public string DocumentPath { get; set; }
 
         public int DocumentStatusId { get; set; }
         public DocumentStatus DocumentStatus { get; set; }

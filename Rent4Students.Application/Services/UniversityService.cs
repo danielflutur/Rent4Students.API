@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using Rent4Students.Application.DTOs.Faculty;
 using Rent4Students.Application.DTOs.University;
 using Rent4Students.Application.Services.Interfaces;
 using Rent4Students.Domain.Entities;
 using Rent4Students.Infrastructure.Repositories.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace Rent4Students.Application.Services
 {
     public class UniversityService : IUniversityService
     {
         private readonly IUniversityRepository _universityRepository;
-        private readonly IFacultyRepository _faultyRepository;
+        private readonly IFacultyRepository _facultyRepository;
         private readonly IStoredPhotoService _photoService;
         private readonly IAddressRepository _addressRepository;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace Rent4Students.Application.Services
             IMapper mapper)
         {
             _universityRepository = universityRepository;
-            _faultyRepository = facultyRepository;
+            _facultyRepository = facultyRepository;
             _photoService = photoService;
             _addressRepository = addressRepository;
             _mapper = mapper;
@@ -33,7 +33,7 @@ namespace Rent4Students.Application.Services
         {
             var photo = await _photoService.Create(universityDTO.ProfilePhoto);
             universityDTO.ProfilePhoto = null;
-            
+
             var mappedUniversity = _mapper.Map<University>(universityDTO);
             mappedUniversity.ProfilePhoto = photo;
             mappedUniversity.ProfilePhotoId = photo.Id;
@@ -46,6 +46,9 @@ namespace Rent4Students.Application.Services
 
             university.Address = await _addressRepository.Create(mappedAddress);
             university.AddressId = university.Address.Id;
+
+            bool isCifValid = await ValidateCIF(university.CIF);
+            university.IsValidated = isCifValid;
 
             await _universityRepository.Update(university);
 
@@ -80,6 +83,42 @@ namespace Rent4Students.Application.Services
         public async Task<ResponseUniversityDTO> Update(UniversityDTO universityDTO)
         {
             return _mapper.Map<ResponseUniversityDTO>(await _universityRepository.Update(_mapper.Map<University>(universityDTO)));
+        }
+
+        private async Task<bool> ValidateCIF(string cif)
+        {
+            if (string.IsNullOrWhiteSpace(cif))
+                return false;
+
+            cif = Regex.Replace(cif, "[^0-9]", "");
+            if (cif.Length < 5)
+                return false;
+
+            var baseAddress = new Uri("https://api.openapi.ro/");
+            var requestUri = $"api/companies/{cif}";
+
+            try
+            {
+                using (var httpClient = new HttpClient { BaseAddress = baseAddress })
+                {
+                    httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", "JS5NGFTsz-EiM4kfcByaAtkiJLtMkcedsBox8sweMZn-cAyAEw");
+
+                    using (var response = await httpClient.GetAsync(requestUri))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string responseData = await response.Content.ReadAsStringAsync();
+                            return !string.IsNullOrEmpty(responseData);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Optionally log the exception for debugging.
+                Console.WriteLine($"Error validating CIF: {ex.Message}");
+            }
+            return false;
         }
     }
 }

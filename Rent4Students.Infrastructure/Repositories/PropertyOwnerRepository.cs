@@ -31,5 +31,15 @@ namespace Rent4Students.Infrastructure.Repositories
                 .Include(listing => listing.Listings)
                 .ToListAsync();
         }
+
+        public async Task<PropertyOwner> GetByEmail(string email)
+        {
+            return await _dbSet
+                .Where(listing => listing.Email == email)
+                .Include(listing => listing.Address)
+                .Include(listing => listing.ProfilePhoto)
+                .Include(listing => listing.Listings)
+                .FirstOrDefaultAsync();
+        }
     }
 }

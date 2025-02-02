@@ -7,7 +7,6 @@ using Rent4Students.Domain.Entities;
 using Rent4Students.Domain.Entities.Joined;
 using Rent4Students.Infrastructure.Repositories.Interfaces;
 using Rent4Students.Infrastructure.Repositories.Interfaces.Enums;
-using System;
 
 namespace Rent4Students.Application.Services
 {
@@ -51,9 +50,13 @@ namespace Rent4Students.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<ResponseStudentDTO> Create(StudentDTO studentDTO, IFormFile profilePhoto)
+        public async Task<ResponseStudentDTO> Create(StudentDTO studentDTO)
         {
-            var photo = await _photoService.Create(profilePhoto);
+            if (StudentExists(studentDTO, out Student foundStudent))
+            {
+                return _mapper.Map<ResponseStudentDTO>(foundStudent);
+            }
+
             var gender = await _genderRepository.GetById(studentDTO.GenderId);
             var nationality = await _nationalityRepository.GetById(studentDTO.NationalityId);
             var faculty = await _facultyRepository.GetById(studentDTO.FacultyId);
@@ -66,8 +69,6 @@ namespace Rent4Students.Application.Services
             mappedStudent.Gender = gender;
             mappedStudent.Nationality = nationality;
             mappedStudent.FacultyName = faculty;
-            mappedStudent.ProfilePhoto = photo;
-            mappedStudent.ProfilePhotoId = photo.Id;
 
             var student = await _studentRepository.Create(mappedStudent);
 
@@ -116,8 +117,19 @@ namespace Rent4Students.Application.Services
 
             await _studentRepository.Update(student);
 
+            return _mapper.Map<ResponseStudentDTO>(student);
+        }
+
+        public async Task<ResponseStudentDTO> AddProfilePhoto(IFormFile profilePhoto, Guid id)
+        {
+            var photo = await _photoService.Create(profilePhoto);
+            var student = await _studentRepository.GetById(id);
+            student.ProfilePhoto = photo;
+            student.ProfilePhotoId = photo.Id;
             photo.Student = student;
             photo.StudentId = student.Id;
+
+            await _studentRepository.Update(student);
 
             return _mapper.Map<ResponseStudentDTO>(student);
         }
@@ -201,6 +213,19 @@ namespace Rent4Students.Application.Services
             return _mapper.Map<ResponseStudentDTO>(student);
         }
 
+
+        public async Task<ResponseStudentDTO> UpdateStudentDetails(Guid id, StudentDetailsDTO studentDTO)
+        {
+            var student = await _studentRepository.GetById(id);
+            var hobbies = await _hobbyRepository.GetByIds(studentDTO.HobbiesIds);
+            var allergies = await _allergyRepository.GetByIds(studentDTO.AllergiesIds);
+            var attributes = await _attributeRepository.GetByIds(studentDTO.AttributesIds);
+
+            await _studentRepository.UpdateStudentDetails(student, hobbies, attributes, allergies);
+            
+            return _mapper.Map<ResponseStudentDTO>(student);
+        }
+
         private async Task<Address> AddAddress(AddressDTO addressDTO, Student student)
         {
             var mappedAddress = _mapper.Map<Address>(addressDTO);
@@ -217,6 +242,14 @@ namespace Rent4Students.Application.Services
             mappedAddress.Student = student;
 
             return await _addressRepository.Update(mappedAddress);
+        }
+
+        private bool StudentExists(StudentDTO studentDTO, out Student student)
+        {
+            var students = _studentRepository.GetAll().Result;
+            student = students.FirstOrDefault(student => student.Email.ToLower() == studentDTO.Email.ToLower());
+            
+            return student != null;
         }
     }
 }

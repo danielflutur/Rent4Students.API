@@ -54,6 +54,13 @@ namespace Rent4Students.API
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "StoredPhotos")),
                 RequestPath = "/StoredPhotos"
             });
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "StoredDocs")),
+                RequestPath = "/StoredDocs"
+            });
+
             app.UseHttpsRedirection();
 
             app.UseCors(corsSpecificOrigin);

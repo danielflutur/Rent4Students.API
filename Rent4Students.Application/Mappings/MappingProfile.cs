@@ -3,6 +3,7 @@ using Rent4Students.Application.DTOs.Address;
 using Rent4Students.Application.DTOs.Allergies;
 using Rent4Students.Application.DTOs.Attributes;
 using Rent4Students.Application.DTOs.Faculty;
+using Rent4Students.Application.DTOs.FinancialHelpDocument;
 using Rent4Students.Application.DTOs.Gender;
 using Rent4Students.Application.DTOs.Hobbies;
 using Rent4Students.Application.DTOs.Listing;
@@ -32,6 +33,7 @@ namespace Rent4Students.Application.Mappings
             ConfigureUniversityMapping();
             ConfigureHobbyMapping();
             ConfigureStudentMapping();
+            ConfigureFinancialHelpDocumentMapping();
         }
 
         private void ConfigureListingMapping()
@@ -123,15 +125,23 @@ namespace Rent4Students.Application.Mappings
                     opt => opt.MapFrom(entity => entity.ProfilePhoto.PhotoURL))
                 .ForMember(student => student.HobbiesIds,
                     opt => opt.MapFrom(entity => entity.Hobbies
-                        .Select(hobby => new ResponseHobbiesDTO { Id = hobby.HobbyId, Name = hobby.Hobby.Name })))
+                        .Select(hobby => hobby.HobbyId)))
                 .ForMember(student => student.AllergiesIds,
                     opt => opt.MapFrom(entity => entity.Allergies
-                        .Select(allergy => new ResponseAllergiesDTO { Id = allergy.AllergyId, Name = allergy.Allergy.Name })))
+                        .Select(allergy => allergy.AllergyId)))
                 .ForMember(student => student.AttributesIds,
                     opt => opt.MapFrom(entity => entity.Attributes
-                        .Select(attribute => new ResponseStudentAttributesDTO { Value = attribute.Attribute.Value, Name = attribute.Attribute.Name})))
-                .ForMember(student => student.Faculty,
-                    opt => opt.MapFrom(entity => new ResponseStudentFacultyDTO { Name = entity.FacultyName.Name, University = new ResponseStudentUniversityDTO { Name = entity.FacultyName.ParentUniversity.Name } }));
+                        .Select(attribute => attribute.AttributeId)))
+                .ForMember(student => student.LivingPreferencesIds,
+                    opt => opt.MapFrom(entity => entity.LivingPreferences
+                        .Select(preference => preference.ListingFeatureId)))
+                .ForMember(student => student.FacultyId,
+                    opt => opt.MapFrom(entity => entity.FacultyId));
+        }
+
+        private void ConfigureFinancialHelpDocumentMapping()
+        {
+            CreateMap<FinancialHelpDocument, ResponseStudentDocumentDTO>();
         }
     }
 }

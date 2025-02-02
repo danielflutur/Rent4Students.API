@@ -5,5 +5,6 @@ namespace Rent4Students.Infrastructure.Repositories.Interfaces
 {
     public interface IFacultyRepository : IBaseRepository<Faculty>
     {
+        Task<Faculty> GetByEmail(string email);
     }
 }

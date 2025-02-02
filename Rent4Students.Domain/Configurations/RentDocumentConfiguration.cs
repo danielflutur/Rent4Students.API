@@ -17,6 +17,9 @@ namespace Rent4Students.Domain.Configurations
             builder.Property(document => document.DocumentName)
                 .IsRequired();
 
+            builder.Property(document => document.DocumentPath)
+                .IsRequired();
+
             builder.HasOne(document => document.DocumentStatus)
                 .WithMany(status => status.RentDocuments)
                 .HasForeignKey(document => document.DocumentStatusId)

@@ -76,6 +76,14 @@ namespace Rent4Students.Application.Services
             return _mapper.Map<List<ResponseFacultyDTO>>(await _facultyRepository.GetAll());
         }
 
+        public async Task<List<ResponseFacultyDTO>> GetAllByUniversityId(Guid id)
+        {
+            var faculties = await _facultyRepository.GetAll();
+            var filteredFaculties = faculties.Where(faculty => faculty.UniversityId == id);
+
+            return _mapper.Map<List<ResponseFacultyDTO>>(filteredFaculties);
+        }
+
         public async Task<ResponseFacultyDTO> GetById(Guid id)
         {
             return _mapper.Map<ResponseFacultyDTO>(await _facultyRepository.GetById(id));

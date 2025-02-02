@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Rent4Students.Application.DTOs.Address;
 using Rent4Students.Application.DTOs.Listing;
 using Rent4Students.Application.Services.Interfaces;
@@ -17,6 +18,7 @@ namespace Rent4Students.Application.Services
         private readonly IListingTypeRepository _listingTypeRepository;
         private readonly IListingFeatureRepository _listingFeatureRepository;
         private readonly IStoredPhotoService _storedPhotoService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
         public LisitngService(
@@ -26,6 +28,7 @@ namespace Rent4Students.Application.Services
             IListingTypeRepository listingTypeRepository,
             IListingFeatureRepository listingFeatureRepository,
             IStoredPhotoService storedPhotoService,
+            IHttpContextAccessor httpContextAccessor,
             IMapper mapper)
         {
             _listingRepository = listingRepository;
@@ -34,6 +37,7 @@ namespace Rent4Students.Application.Services
             _listingTypeRepository = listingTypeRepository;
             _listingFeatureRepository = listingFeatureRepository;
             _storedPhotoService = storedPhotoService;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
@@ -90,7 +94,24 @@ namespace Rent4Students.Application.Services
 
         public async Task<List<ResponseListingDTO>> GetAll()
         {
-            return _mapper.Map<List<ResponseListingDTO>>(await _listingRepository.GetAll());
+            var request = _httpContextAccessor.HttpContext?.Request;
+            if (request == null)
+                throw new InvalidOperationException("No active HTTP context");
+
+            var listings = await _listingRepository.GetAll();
+            var mappedListings = new List<ResponseListingDTO>();
+
+            foreach (var item in listings)
+            {
+                foreach (var photo in item.Photos)
+                {
+                    photo.PhotoURL = $"{request.Scheme}://{request.Host}/StoredPhotos/{photo.PhotoName}";
+                }
+
+                mappedListings.Add(_mapper.Map<ResponseListingDTO>(item));
+            }
+
+            return mappedListings;
         }
 
         public async Task<ResponseListingDTO> GetById(Guid Id)

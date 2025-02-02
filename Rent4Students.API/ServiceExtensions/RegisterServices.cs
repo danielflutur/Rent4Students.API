@@ -18,6 +18,8 @@ namespace Rent4Students.API.ServiceExtensions
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IUniversityService, UniversityService>();
             services.AddScoped<IFacultyService, FacultyService>();
+            services.AddScoped<IFinancialHelpDocumentService, FinancialHelpDocumentService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }

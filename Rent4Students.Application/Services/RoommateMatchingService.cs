@@ -2,8 +2,6 @@
 using Rent4Students.Application.DTOs.Student;
 using Rent4Students.Application.Services.Interfaces;
 using Rent4Students.Domain.Entities;
-using Rent4Students.Domain.Entities.Enums;
-using Rent4Students.Domain.Entities.Joined;
 using Rent4Students.Infrastructure.Repositories.Interfaces;
 
 namespace Rent4Students.Application.Services
@@ -43,8 +41,9 @@ namespace Rent4Students.Application.Services
             var compatibilityScores = filteredStudents.Select(student => new
             {
                 Student = student,
-                Score = CalculateCompatibilityScore(currentStudent, student)
+                Score = Math.Round(CalculateCompatibilityScore(currentStudent, student) * 3, 2)
             }).OrderByDescending(x => x.Score)
+              .Where(student => student.Score > 5)
               .ToList();
 
             return compatibilityScores.Select(x => new ResponseRoommateScoreDTO { Student = _mapper.Map<ResponseStudentDTO>(x.Student), Score = x.Score}).ToList();
@@ -106,7 +105,6 @@ namespace Rent4Students.Application.Services
             // If no incompatibilities are found, assume they are compatible
             return true;
         }
-
 
         private double CalculateCompatibilityScore(Student currentStudent, Student otherStudent)
         {

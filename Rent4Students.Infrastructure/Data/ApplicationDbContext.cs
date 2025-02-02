@@ -131,6 +131,8 @@ namespace Rent4Students.Infrastructure.Data
         {
             var rentContract = new DocumentType { Id = 1, Name = "RentContract" };
             var financialHelp = new DocumentType { Id = 2, Name = "FinancialHelp" };
+            var rentTemplate = new DocumentType { Id = 3, Name = "RentContractTemplate" };
+            var financialTemplate = new DocumentType { Id = 4, Name = "FinancialHelpTemplate" };
             
             modelBuilder.Entity<DocumentType>().HasData(rentContract, financialHelp); 
         }

@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Rent4Students.Application.DTOs.Listing;
+﻿using Microsoft.AspNetCore.Mvc;
 using Rent4Students.Application.DTOs.University;
-using Rent4Students.Application.Services;
 using Rent4Students.Application.Services.Interfaces;
-using Rent4Students.Domain.Entities;
-using Rent4Students.Infrastructure.Data;
 
 namespace Rent4Students.API.Controllers
 {

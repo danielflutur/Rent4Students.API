@@ -35,6 +35,15 @@ namespace Rent4Students.API.Controllers
         }
 
         [HttpGet]
+        [Route("allByUniversity/{id}")]
+        [ProducesResponseType(typeof(ResponseFacultyDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllByUniversityId(Guid id)
+        {
+            return Ok(await _facultyService.GetAllByUniversityId(id));
+        }
+
+        [HttpGet]
         [ProducesResponseType(typeof(List<ResponseFacultyDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
