@@ -14,6 +14,12 @@ namespace Rent4Students.Domain.Configurations
             builder.Property(faculty => faculty.Name)
                 .IsRequired(false);
 
+            builder.Property(faculty => faculty.SecretaryName)
+                .IsRequired(false);
+
+            builder.Property(faculty => faculty.EmailSent)
+                .IsRequired();
+
             builder.Property(faculty => faculty.Email)
                 .IsRequired();
 

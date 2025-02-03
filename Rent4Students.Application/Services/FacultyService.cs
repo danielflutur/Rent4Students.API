@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Rent4Students.Application.DTOs.Faculty;
+using Rent4Students.Application.DTOs.Student;
 using Rent4Students.Application.Services.Interfaces;
 using Rent4Students.Domain.Entities;
+using Rent4Students.Infrastructure.Repositories;
 using Rent4Students.Infrastructure.Repositories.Interfaces;
 
 namespace Rent4Students.Application.Services
@@ -12,6 +15,7 @@ namespace Rent4Students.Application.Services
         private readonly IFacultyRepository _facultyRepository;
         private readonly IStoredPhotoService _photoService;
         private readonly IAddressRepository _addressRepository;
+        private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
 
         public FacultyService(
@@ -19,23 +23,20 @@ namespace Rent4Students.Application.Services
             IFacultyRepository facultyRepository,
             IStoredPhotoService photoService,
             IAddressRepository addressRepository,
+            IEmailService emailService,
             IMapper mapper)
         {
             _universityRepository = universityRepository;
             _facultyRepository = facultyRepository;
             _photoService = photoService;
             _addressRepository = addressRepository;
+            _emailService = emailService;
             _mapper = mapper;
         }
 
         public async Task<ResponseFacultyDTO> Create(FacultyDTO facultyDTO)
         {
-            var photo = await _photoService.Create(facultyDTO.ProfilePhoto);
-            facultyDTO.ProfilePhoto = null;
-
             var mappedFaculty = _mapper.Map<Faculty>(facultyDTO);
-            mappedFaculty.ProfilePhoto = photo;
-            mappedFaculty.ProfilePhotoId = photo.Id;
             var university = await _universityRepository.GetById(facultyDTO.UniversityId);
             mappedFaculty.ParentUniversity = university;
             mappedFaculty.UniversityId = mappedFaculty.ParentUniversity.Id;
@@ -53,10 +54,21 @@ namespace Rent4Students.Application.Services
 
             await _facultyRepository.Update(faculty);
 
+            return _mapper.Map<ResponseFacultyDTO>(faculty);
+        }
+
+        public async Task<ResponseStudentDTO> AddProfilePhoto(IFormFile profilePhoto, Guid id)
+        {
+            var photo = await _photoService.Create(profilePhoto);
+            var faculty = await _facultyRepository.GetById(id);
+            faculty.ProfilePhoto = photo;
+            faculty.ProfilePhotoId = photo.Id;
             photo.Faculty = faculty;
             photo.FacultyId = faculty.Id;
 
-            return _mapper.Map<ResponseFacultyDTO>(faculty);
+            await _facultyRepository.Update(faculty);
+
+            return _mapper.Map<ResponseStudentDTO>(faculty);
         }
 
         public async Task Delete(Guid id)
@@ -84,14 +96,27 @@ namespace Rent4Students.Application.Services
             return _mapper.Map<List<ResponseFacultyDTO>>(filteredFaculties);
         }
 
+        public async Task<ResponseFacultyDTO> SendFacultyEmail(Guid facultyId)
+        {
+            var faculty = await _facultyRepository.GetById(facultyId);
+            var isEmailSent = await _emailService.SendAccessEmailForFaculty(faculty);
+            faculty.EmailSent = isEmailSent;
+            await _facultyRepository.Update(faculty);
+
+            return _mapper.Map<ResponseFacultyDTO>(faculty);
+        }
+
         public async Task<ResponseFacultyDTO> GetById(Guid id)
         {
             return _mapper.Map<ResponseFacultyDTO>(await _facultyRepository.GetById(id));
         }
 
-        public async Task<ResponseFacultyDTO> Update(FacultyDTO facultyDTO)
+        public async Task<ResponseFacultyDTO> Update(Guid id, UpdateFacultyDTO facultyDTO)
         {
-            return _mapper.Map<ResponseFacultyDTO>(await _facultyRepository.Update(_mapper.Map<Faculty>(facultyDTO)));
+            var faculty = await _facultyRepository.GetById(id);
+            _mapper.Map(facultyDTO, faculty);
+
+            return _mapper.Map<ResponseFacultyDTO>(await _facultyRepository.Update(faculty));
         }
     }
 }

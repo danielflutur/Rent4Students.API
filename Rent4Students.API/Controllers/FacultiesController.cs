@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rent4Students.Application.DTOs.Faculty;
+using Rent4Students.Application.DTOs.Student;
 using Rent4Students.Application.Services.Interfaces;
 
 namespace Rent4Students.API.Controllers
@@ -20,11 +21,19 @@ namespace Rent4Students.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ResponseFacultyDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateListing(FacultyDTO facultyDTO)
+        public async Task<IActionResult> CreateFaculty(FacultyDTO facultyDTO)
         {
             return Ok(await _facultyService.Create(facultyDTO));
         }
 
+        [HttpPost]
+        [Route("addPhoto")]
+        [ProducesResponseType(typeof(ResponseStudentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddProfilePhoto(IFormFile profilePhoto, Guid id)
+        {
+            return Ok(await _facultyService.AddProfilePhoto(profilePhoto, id));
+        }
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(typeof(ResponseFacultyDTO), StatusCodes.Status200OK)]
@@ -44,6 +53,15 @@ namespace Rent4Students.API.Controllers
         }
 
         [HttpGet]
+        [Route("sendEmail/{facultyId}")]
+        [ProducesResponseType(typeof(ResponseFacultyDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> SendFacultyEmail(Guid facultyId)
+        {
+            return Ok(await _facultyService.SendFacultyEmail(facultyId));
+        }
+
+        [HttpGet]
         [ProducesResponseType(typeof(List<ResponseFacultyDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
@@ -53,9 +71,9 @@ namespace Rent4Students.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ResponseFacultyDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(Guid id, FacultyDTO facultyDTO)
+        public async Task<IActionResult> Update(Guid id, UpdateFacultyDTO facultyDTO)
         {
-            return Ok(await _facultyService.Update(facultyDTO));
+            return Ok(await _facultyService.Update(id, facultyDTO));
         }
 
         [HttpDelete("{id}")]

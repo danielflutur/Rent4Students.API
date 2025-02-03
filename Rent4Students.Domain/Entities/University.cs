@@ -9,7 +9,6 @@ namespace Rent4Students.Domain.Entities
         public string EncryptedPassword { get; set; }
         public string? Phone { get; set; }
         public string CIF { get; set; }
-        public string InstitutionalCode { get; set; }
         public bool IsValidated { get; set; }
         
         public Guid? ProfilePhotoId { get; set; }

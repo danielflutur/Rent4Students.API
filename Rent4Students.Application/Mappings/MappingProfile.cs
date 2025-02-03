@@ -96,6 +96,7 @@ namespace Rent4Students.Application.Mappings
             CreateMap<StudentFacultyDTO, Faculty>();
             CreateMap<Faculty, ResponseStudentFacultyDTO>();
             CreateMap<FacultyDTO, Faculty>();
+            CreateMap<UpdateFacultyDTO, Faculty>();
             CreateMap<Faculty, ResponseFacultyDTO>()
                 .ForMember(faculty => faculty.ProfilePhoto,
                 opt => opt.MapFrom(entity => entity.ProfilePhoto.PhotoURL));

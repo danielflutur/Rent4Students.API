@@ -8,6 +8,8 @@ namespace Rent4Students.Domain.Entities
         public string Email { get; set; }
         public string EncryptedPassword { get; set; }
         public string Phone { get; set; }
+        public string SecretaryName { get; set; }
+        public bool EmailSent { get; set; }
 
         public Guid UniversityId { get; set; }
         public University ParentUniversity { get; set; }

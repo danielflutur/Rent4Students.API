@@ -6,9 +6,11 @@ namespace Rent4Students.Application.DTOs.Faculty
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string SecretaryName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string ProfilePhoto { get; set; }
+        public bool EmailSent { get; set; }
         public ResponseAddressDTO Address { get; set; }
     }
 }

@@ -10,7 +10,6 @@ namespace Rent4Students.Application.DTOs.University
         public string Email { get; set; }
         public string Phone { get; set; }
         public string CIF { get; set; }
-        public  string InstitutionalCode { get; set; }
         public bool IsValidated { get; set; }
 
         public string ProfilePhoto { get; set; }

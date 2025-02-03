@@ -24,9 +24,6 @@ namespace Rent4Students.Domain.Configurations
             builder.Property(university => university.CIF)
                 .IsRequired();
 
-            builder.Property(university => university.InstitutionalCode)
-                .IsRequired();
-
             builder.Property(university => university.IsValidated)
                 .IsRequired();
 
