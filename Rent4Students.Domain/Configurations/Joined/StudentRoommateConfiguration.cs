@@ -10,6 +10,9 @@ namespace Rent4Students.Domain.Configurations.Joined
         {
             builder.HasKey(studentRoommate => new { studentRoommate.StudentId, studentRoommate.RoommateId });
 
+            builder.Property(roommate => roommate.IsActive)
+                .IsRequired();
+
             builder.HasOne(studentRoommate => studentRoommate.Student)
                 .WithMany(student => student.Roommates)
                 .HasForeignKey(studentRoommate => studentRoommate.StudentId)

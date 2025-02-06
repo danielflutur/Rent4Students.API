@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rent4Students.Application.DTOs.Listing;
+using Rent4Students.Application.DTOs.RentHistory;
 using Rent4Students.Application.Services.Interfaces;
 
 namespace Rent4Students.API.Controllers
@@ -35,6 +36,14 @@ namespace Rent4Students.API.Controllers
         }
 
         [HttpGet]
+        [Route("ownedBy/{id}")]
+        [ProducesResponseType(typeof(List<ResponseOwnerListingsDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllOwnedBy(Guid id)
+        {
+            return Ok(await _listingService.GetAllOwnedBy(id));
+        }
+
+        [HttpGet]
         [ProducesResponseType(typeof(List<ResponseListingDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
@@ -57,6 +66,35 @@ namespace Rent4Students.API.Controllers
             await _listingService.Delete(id);
 
             return Ok(id);
+        }
+
+        [HttpPost]
+        [Route("rent-contract")]
+        [ProducesResponseType(typeof(ResponseListingDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateRentRequest(ListingRentRequestDTO rentRequestDTO)
+        {
+            return Ok(await _listingService.CreateRentRequest(rentRequestDTO));
+        }
+
+        [HttpPost]
+        [Route("accept-rent")]
+        [ProducesResponseType(typeof(ResponseOwnerListingsDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AcceptRentRequest(AcceptRentHistoryDTO rentRequestDTO)
+        {
+            await _listingService.AcceptRentRequest(rentRequestDTO);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("reject-rent")]
+        [ProducesResponseType(typeof(ResponseOwnerListingsDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RejectRentRequest(Guid id)
+        {
+            await _listingService.RejectRentRequest(id);
+            return Ok();
         }
     }
 }

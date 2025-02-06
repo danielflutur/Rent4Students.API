@@ -29,6 +29,7 @@ namespace Rent4Students.API.ServiceExtensions
             services.AddScoped<INationalityRepository, NationalityRepository>();
             services.AddScoped<IPersonalityAttributeRepository, PersonalityAttributeRepository>();
             services.AddScoped<IRentStatusRepository, RentStatusRepository>();
+            services.AddScoped<IRentHistoryRepository, RentHistoryRepository>();
 
             return services;
         }

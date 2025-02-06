@@ -29,6 +29,9 @@ namespace Rent4Students.Domain.Configurations
             builder.Property(listing => listing.DepositAmount)
                 .IsRequired(false);
 
+            builder.Property(listing => listing.IsRented)
+                .IsRequired();
+
             builder.HasOne(listing => listing.ListingType)
                 .WithMany(type => type.Listings)
                 .HasForeignKey(listing => listing.ListingTypeId)

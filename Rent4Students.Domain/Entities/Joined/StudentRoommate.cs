@@ -6,5 +6,6 @@
         public Student Student { get; set; }
         public Guid RoommateId { get; set; }
         public Student Roommate { get; set; }
+        public bool IsActive { get; set; }
     }
 }

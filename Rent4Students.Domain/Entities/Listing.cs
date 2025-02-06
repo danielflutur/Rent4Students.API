@@ -12,6 +12,7 @@ namespace Rent4Students.Domain.Entities
         public int? BuildingYear { get; set; }
         public float Surface { get; set; }
         public int? DepositAmount { get; set; }
+        public bool IsRented {  get; set; }
 
         public int ListingTypeId { get; set; }
         public ListingType ListingType { get; set; }

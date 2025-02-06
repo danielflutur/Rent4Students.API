@@ -1,4 +1,5 @@
 ﻿using Rent4Students.Domain.Entities.Base;
+using Rent4Students.Domain.Entities.Joined;
 
 namespace Rent4Students.Domain.Entities
 {
@@ -18,5 +19,7 @@ namespace Rent4Students.Domain.Entities
         public Faculty? Faculty { get; set; }
         public Guid? PropertyOwnerId { get; set; }
         public PropertyOwner? PropertyOwner { get; set; }
+        public Guid? RentHistoryId { get; set; }
+        public RentHistory? RentHistory { get; set; }
     }
 }

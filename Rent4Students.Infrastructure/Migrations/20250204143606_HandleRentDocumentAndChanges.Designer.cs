@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rent4Students.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Rent4Students.Infrastructure.Data;
 namespace Rent4Students.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250204143606_HandleRentDocumentAndChanges")]
+    partial class HandleRentDocumentAndChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2849,7 +2852,7 @@ namespace Rent4Students.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AttatchedPhotoId")
+                    b.Property<Guid>("AttatchedPhotoId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -3597,7 +3600,7 @@ namespace Rent4Students.Infrastructure.Migrations
                     b.HasOne("Rent4Students.Domain.Entities.Joined.RentHistory", "RentHistory")
                         .WithOne("AttatchedPhoto")
                         .HasForeignKey("Rent4Students.Domain.Entities.StoredPhoto", "RentHistoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Faculty");
 

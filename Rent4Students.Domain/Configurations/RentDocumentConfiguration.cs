@@ -39,15 +39,12 @@ namespace Rent4Students.Domain.Configurations
                 .IsRequired();
 
             builder.Property(details => details.AdditionalDetails)
-                .IsRequired();
+                .IsRequired(false);
 
             builder.Property(details => details.StartDate)
                 .IsRequired();
 
             builder.Property(details => details.EndDate)
-                .IsRequired();
-
-            builder.Property(details => details.RentPaymentDate)
                 .IsRequired();
 
             builder.HasMany(document => document.RentHistories)

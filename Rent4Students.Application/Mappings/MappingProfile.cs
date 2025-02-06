@@ -10,10 +10,12 @@ using Rent4Students.Application.DTOs.Listing;
 using Rent4Students.Application.DTOs.ListingFeature;
 using Rent4Students.Application.DTOs.Nationality;
 using Rent4Students.Application.DTOs.PropertyOwner;
+using Rent4Students.Application.DTOs.RentHistory;
 using Rent4Students.Application.DTOs.Student;
 using Rent4Students.Application.DTOs.University;
 using Rent4Students.Domain.Entities;
 using Rent4Students.Domain.Entities.Enums;
+using Rent4Students.Domain.Entities.Joined;
 
 namespace Rent4Students.Application.Mappings
 {
@@ -34,6 +36,7 @@ namespace Rent4Students.Application.Mappings
             ConfigureHobbyMapping();
             ConfigureStudentMapping();
             ConfigureFinancialHelpDocumentMapping();
+            ConfigureRentHistoryMapping();
         }
 
         private void ConfigureListingMapping()
@@ -44,6 +47,7 @@ namespace Rent4Students.Application.Mappings
                 opt => opt.MapFrom(entity => entity.Photos.Select(photo => photo.PhotoURL)))
                 .ForMember(listing => listing.AmenitiesIds,
                 opt => opt.MapFrom(entity => entity.Amenities.Select(amenity => amenity.ListingFeatureId)));
+            CreateMap<Listing, ResponseOwnerListingsDTO>();
         }
 
         private void ConfigureAddressMapping()
@@ -89,6 +93,10 @@ namespace Rent4Students.Application.Mappings
         {
             CreateMap<StudentAttributeDTO, PersonalityAttribute>();
             CreateMap<PersonalityAttribute, ResponseStudentAttributesDTO>();
+        }
+        private void ConfigureRentHistoryMapping()
+        {
+            CreateMap<RentHistory, ResponseRentHistoryDTO>();
         }
 
         private void ConfigureFacultyMapping()

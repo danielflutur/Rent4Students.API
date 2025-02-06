@@ -30,6 +30,15 @@ namespace Rent4Students.API.Controllers
         }
 
         [HttpPost]
+        [Route("add-roommate")]
+        [ProducesResponseType(typeof(ResponseStudentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddRoommate(AddRoommateDTO roommateDTO)
+        {
+            return Ok(await _studentService.AddRoommate(roommateDTO));
+        }
+
+        [HttpPost]
         [Route("addPhoto")]
         [ProducesResponseType(typeof(ResponseStudentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]

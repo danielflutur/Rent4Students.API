@@ -134,6 +134,45 @@ namespace Rent4Students.Application.Services
             return _mapper.Map<ResponseStudentDTO>(student);
         }
 
+        public async Task<ResponseStudentDTO> AddRoommate(AddRoommateDTO roommateDTO)
+        {
+            var student = await _studentRepository.GetById(roommateDTO.StudentId);
+            var roommate = await _studentRepository.GetById(roommateDTO.RoommateId);
+
+            if (student.Roommates == null)
+            {
+                student.Roommates = new List<StudentRoommate>();
+            }
+
+            if (roommate.Roommates == null)
+            {
+                roommate.Roommates = new List<StudentRoommate>();
+            }
+
+            student.Roommates.Add(new StudentRoommate
+            {
+                Student = student,
+                StudentId = student.Id,
+                Roommate = roommate,
+                RoommateId = roommate.Id,
+                IsActive = true
+            });
+
+            roommate.Roommates.Add(new StudentRoommate
+            {
+                Student = roommate,
+                StudentId = roommate.Id,
+                Roommate = student,
+                RoommateId = student.Id,
+                IsActive = true
+            });
+
+            await _studentRepository.Update(student);
+            await _studentRepository.Update(roommate);
+
+            return _mapper.Map<ResponseStudentDTO>(student);
+        }
+
         public async Task Delete(Guid id)
         {
             var student = await _studentRepository.GetById(id);

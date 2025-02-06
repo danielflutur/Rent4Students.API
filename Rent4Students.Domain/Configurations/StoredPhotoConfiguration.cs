@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rent4Students.Domain.Configurations.Base;
 using Rent4Students.Domain.Entities;
+using Rent4Students.Domain.Entities.Joined;
 
 namespace Rent4Students.Domain.Configurations
 {
@@ -50,6 +51,12 @@ namespace Rent4Students.Domain.Configurations
             builder.HasOne(photo => photo.PropertyOwner)
                 .WithOne(owner => owner.ProfilePhoto)
                 .HasForeignKey<PropertyOwner>(owner => owner.ProfilePictureId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
+
+            builder.HasOne(photo => photo.RentHistory)
+                .WithOne(rent => rent.AttatchedPhoto)
+                .HasForeignKey<RentHistory>(rent => rent.AttatchedPhotoId)
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
         }
