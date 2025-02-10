@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Rent4Students.Application.DTOs.Student;
 using Rent4Students.Application.DTOs.University;
 using Rent4Students.Application.Services.Interfaces;
 using Rent4Students.Domain.Entities;
+using Rent4Students.Infrastructure.Repositories;
 using Rent4Students.Infrastructure.Repositories.Interfaces;
 using System.Text.RegularExpressions;
 
@@ -31,12 +33,12 @@ namespace Rent4Students.Application.Services
 
         public async Task<ResponseUniversityDTO> Create(UniversityDTO universityDTO)
         {
-            var photo = await _photoService.Create(universityDTO.ProfilePhoto);
-            universityDTO.ProfilePhoto = null;
+            if (UniversityExists(universityDTO, out University foundUniversity))
+            {
+                return _mapper.Map<ResponseUniversityDTO>(foundUniversity);
+            }
 
             var mappedUniversity = _mapper.Map<University>(universityDTO);
-            mappedUniversity.ProfilePhoto = photo;
-            mappedUniversity.ProfilePhotoId = photo.Id;
 
             var university = await _universityRepository.Create(mappedUniversity);
 
@@ -51,9 +53,6 @@ namespace Rent4Students.Application.Services
             university.IsValidated = isCifValid;
 
             await _universityRepository.Update(university);
-
-            photo.University = university;
-            photo.UniversityId = university.Id;
 
             return _mapper.Map<ResponseUniversityDTO>(university);
         }
@@ -119,6 +118,14 @@ namespace Rent4Students.Application.Services
                 Console.WriteLine($"Error validating CIF: {ex.Message}");
             }
             return false;
+        }
+
+        private bool UniversityExists(UniversityDTO universityDTO, out University university)
+        {
+            var students = _universityRepository.GetAll().Result;
+            university = students.FirstOrDefault(student => student.Email.ToLower() == universityDTO.Email.ToLower());
+
+            return university != null;
         }
     }
 }

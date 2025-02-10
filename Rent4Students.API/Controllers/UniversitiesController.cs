@@ -20,7 +20,7 @@ namespace Rent4Students.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ResponseUniversityDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateUniversity(UniversityDTO universityDTO)
+        public async Task<IActionResult> CreateUniversity([FromForm]UniversityDTO universityDTO)
         {
             return Ok(await _universityService.Create(universityDTO));
         }

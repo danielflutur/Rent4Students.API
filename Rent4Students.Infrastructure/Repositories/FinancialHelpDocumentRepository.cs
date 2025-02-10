@@ -19,6 +19,7 @@ namespace Rent4Students.Infrastructure.Repositories
                 .Include(document => document.DocumentStatus)
                 .Include(document => document.DocumentType)
                 .Include(document => document.Faculty)
+                .Include(document => document.Student)
                 .FirstOrDefaultAsync();
         }
 
@@ -29,6 +30,7 @@ namespace Rent4Students.Infrastructure.Repositories
                 .Include(document => document.DocumentStatus)
                 .Include(document => document.DocumentType)
                 .Include(document => document.Faculty)
+                .Include(document => document.Student)
                 .ToListAsync();
         }
     }

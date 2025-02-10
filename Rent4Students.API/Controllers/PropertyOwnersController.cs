@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rent4Students.Application.DTOs.PropertyOwner;
+using Rent4Students.Application.DTOs.Student;
 using Rent4Students.Application.Services.Interfaces;
 
 namespace Rent4Students.API.Controllers
@@ -24,6 +25,17 @@ namespace Rent4Students.API.Controllers
         {
             return Ok(await _ownerService.Create(ownerDTO));
         }
+
+
+        [HttpPost]
+        [Route("addPhoto")]
+        [ProducesResponseType(typeof(ResponseStudentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddProfilePhoto(IFormFile profilePhoto, Guid id)
+        {
+            return Ok(await _ownerService.AddProfilePhoto(profilePhoto, id));
+        }
+
 
         [HttpGet]
         [Route("{id}")]

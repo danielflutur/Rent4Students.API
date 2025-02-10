@@ -22,7 +22,7 @@ namespace Rent4Students.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(FinancialHelpDocument), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UploadTemplate(IFormFile file, Guid facultyId)
+        public async Task<IActionResult> UploadTemplate(IFormFile file, [FromForm] Guid facultyId)
         {
             var uploadedDocument = await _documentService.UploadTemplate(file, facultyId);
 
@@ -31,11 +31,20 @@ namespace Rent4Students.API.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [ProducesResponseType(typeof(ResponseStudentDocumentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(byte[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetDocument(Guid id)
         {
-            return Ok(await _documentService.GetDocument(id));
+            try
+            {
+                var filledPdfBytes = await _documentService.GetDocument(id);
+
+                return File(filledPdfBytes, "application/pdf", "RentHelpRequest.pdf");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpGet]
@@ -68,7 +77,7 @@ namespace Rent4Students.API.Controllers
 
         [HttpGet]
         [Route("faculty/{id}")]
-        [ProducesResponseType(typeof(ResponseStudentDocumentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFacultyRequestDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllFaculty(Guid id)
         {
@@ -83,7 +92,6 @@ namespace Rent4Students.API.Controllers
         {
             return Ok(await _documentService.GetAllForStudent(id));
         }
-
 
         [HttpGet]
         [ProducesResponseType(typeof(List<ResponseStudentDocumentDTO>), StatusCodes.Status200OK)]
@@ -100,6 +108,16 @@ namespace Rent4Students.API.Controllers
             await _documentService.Delete(id);
 
             return Ok(id);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(FinancialHelpDocument), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateRequestStatus(Guid documentId, int documentStatus)
+        {
+            var uploadedDocument = await _documentService.UpdateRequestStatus(documentId, documentStatus);
+
+            return Ok(uploadedDocument.StorageURL);
         }
     }
 }

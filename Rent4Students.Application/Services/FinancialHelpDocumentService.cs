@@ -17,7 +17,7 @@ namespace Rent4Students.Application.Services
     public class FinancialHelpDocumentService : IFinancialHelpDocumentService
     {
         private readonly IFinancialHelpDocumentRepository _documentRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor; 
         private readonly IFacultyRepository _facultyRepository;
         private readonly IStudentRepository _studentRepository;
         private readonly IDocumentStatusRepository _documentStatusRepository;
@@ -60,11 +60,34 @@ namespace Rent4Students.Application.Services
             return _mapper.Map<List<ResponseStudentDocumentDTO>>(await _documentRepository.GetAll());
         }
 
-        public async Task<List<ResponseStudentDocumentDTO>> GetAllFaculty(Guid id)
+        public async Task<List<ResponseFacultyRequestDTO>> GetAllFaculty(Guid id)
         {
             var docs = await _documentRepository.GetAll();
+            var filteredDocs = docs.Where(doc => doc.FacultyId == id && doc.DocumentTypeId == 2 );
 
-            return _mapper.Map<List<ResponseStudentDocumentDTO>>(docs.Where(doc => doc.FacultyId == id));
+            var mappedDocs = new List<ResponseFacultyRequestDTO>();
+            foreach (var doc in filteredDocs)
+            {
+                mappedDocs.Add(new ResponseFacultyRequestDTO
+                {
+                    DocumentDetails = new ResponseStudentDocumentDTO
+                    {
+                        DocumentName = doc.DocumentName,
+                        DocumentStatusId = doc.DocumentStatusId,
+                        Id = doc.Id,
+                        StorageURL = doc.StorageURL
+                    },
+                    StudentDetails = new ResponseStudentDetailsDTO
+                    {
+                        Id = doc.Student.Id,
+                        Email = doc.Student.Email,
+                        FirstName = doc.Student.FirstName,
+                        LastName = doc.Student.LastName,
+                    }
+                });
+            }
+
+            return mappedDocs;
         }
 
         public async Task<byte[]> GetFacultyTemplate(Guid facultyId, Guid studentId)
@@ -112,9 +135,17 @@ namespace Rent4Students.Application.Services
             return _mapper.Map<List<ResponseStudentDocumentDTO>>(docs.Where(doc => doc.StudentId == id));
         }
 
-        public async Task<ResponseStudentDocumentDTO> GetDocument(Guid id)
+        public async Task<byte[]> GetDocument(Guid id)
         {
-            return _mapper.Map<ResponseStudentDocumentDTO>(await _documentRepository.GetById(id));
+            var doc = await _documentRepository.GetById(id);
+
+            if (doc == null)
+                throw new FileNotFoundException("Document not found.");
+
+            if (!File.Exists(doc.DocumentPath))
+                throw new FileNotFoundException("File not found on the server.");
+
+            return await File.ReadAllBytesAsync(doc.DocumentPath);
         }
 
         public async Task<FinancialHelpDocument> UploadRentDocuments(IFormFile file, Guid studentId)
@@ -138,6 +169,8 @@ namespace Rent4Students.Application.Services
 
             document.Student = student;
             document.StudentId = studentId;
+            document.Faculty = student.FacultyName;
+            document.FacultyId = student.FacultyId;
             document.DocumentName = $"{student.FirstName}{student.LastName}{student.FacultyName.Name}FullDocument.pdf";
             document.DocumentPath = Path.Combine(uploadsFolder, document.DocumentName);
 
@@ -191,6 +224,15 @@ namespace Rent4Students.Application.Services
             document.StorageURL = $"{request.Scheme}://{request.Host}/StoredDocs/{document.DocumentName}";
 
             return await _documentRepository.Create(document);
+        }
+
+        public async Task<FinancialHelpDocument> UpdateRequestStatus(Guid documentId, int documentStatus)
+        {
+            var document = await _documentRepository.GetById(documentId);
+            document.DocumentStatusId = documentStatus;
+            document.DocumentStatus = await _documentStatusRepository.GetById(documentStatus);
+
+            return await _documentRepository.Update(document);
         }
 
         private void ValidateFile(IFormFile file)

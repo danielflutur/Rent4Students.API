@@ -264,7 +264,7 @@ namespace Rent4Students.Application.Services
                 {
                     if (roommate != null && roommate.IsActive == true)
                     {
-                        currentStudents.Add(roommate.Roommate);
+                        currentStudents.Add(roommate.Student);
                     }
                 }
             }

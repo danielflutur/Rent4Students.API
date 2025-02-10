@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Rent4Students.Application.DTOs.Address;
 using Rent4Students.Application.DTOs.PropertyOwner;
+using Rent4Students.Application.DTOs.Student;
 using Rent4Students.Application.Services.Interfaces;
 using Rent4Students.Domain.Entities;
+using Rent4Students.Infrastructure.Repositories;
 using Rent4Students.Infrastructure.Repositories.Interfaces;
 
 namespace Rent4Students.Application.Services
@@ -41,6 +44,20 @@ namespace Rent4Students.Application.Services
 
             photo.PropertyOwner = owner;
             photo.PropertyOwnerId = owner.Id;
+
+            return _mapper.Map<ResponsePropertyOwnerDTO>(owner);
+        }
+
+        public async Task<ResponsePropertyOwnerDTO> AddProfilePhoto(IFormFile profilePhoto, Guid id)
+        {
+            var photo = await _storedPhotoService.Create(profilePhoto);
+            var owner = await _ownerRepository.GetById(id);
+            owner.ProfilePhoto = photo;
+            owner.ProfilePhotoId = photo.Id;
+            photo.PropertyOwner = owner;
+            photo.PropertyOwnerId = owner.Id;
+
+            await _ownerRepository.Update(owner);
 
             return _mapper.Map<ResponsePropertyOwnerDTO>(owner);
         }

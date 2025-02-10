@@ -11,7 +11,6 @@ namespace Rent4Students.Application.DTOs.University
         public string EncryptedPassword { get; set; }
         public string? Phone { get; set; }
         public string CIF { get; set; }
-        public IFormFile ProfilePhoto { get; set; }
         public AddressDTO Address { get; set; }
     }
 }

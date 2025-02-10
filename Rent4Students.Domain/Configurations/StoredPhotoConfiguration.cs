@@ -50,7 +50,7 @@ namespace Rent4Students.Domain.Configurations
 
             builder.HasOne(photo => photo.PropertyOwner)
                 .WithOne(owner => owner.ProfilePhoto)
-                .HasForeignKey<PropertyOwner>(owner => owner.ProfilePictureId)
+                .HasForeignKey<PropertyOwner>(owner => owner.ProfilePhotoId)
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
 
